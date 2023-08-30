@@ -1,36 +1,36 @@
 # conecta-cientifica
 
-## Criar um ambiente virtual:
+### Criar um ambiente virtual:
 python -m venv venv
 
-## Ativar a venv:
+### Ativar a venv:
 Linux: source venv/bin/activate  
 Windows: venv\Scripts\activate
 
 
-## Instalar as dependências (bibliotecas e pacotes necessários para o projeto):
+### Instalar as dependências (bibliotecas e pacotes necessários para o projeto):
 pip install -r requirements.txt
 
 
-## Configuração do banco de dados:
+### Configuração do banco de dados:
 python manage.py migrate
 
 
-## Crie um superusuário (opcional):
+### Crie um superusuário (opcional):
 python manage.py createsuperuser
 
 
-## Execute o servidor de desenvolvimento:
+### Execute o servidor de desenvolvimento:
 python manage.py runserver
 
 
-## Outros comandos:
+### Outros comandos:
 Criar um app:
 python manage.py startapp nome_do_app
 
-##Verificar se há algum erro
+### Verificar se há algum erro
 python manage.py check
 
-## Aplicar as migrações* do banco de dados. (*Migrações são uma forma de você manter o esquema do banco de dados sincronizado com o estado atual dos seus modelos (tabelas) no código.)
+### Aplicar as migrações* do banco de dados. (*Migrações são uma forma de você manter o esquema do banco de dados sincronizado com o estado atual dos seus modelos (tabelas) no código.)
 python manage.py migrate 
 
