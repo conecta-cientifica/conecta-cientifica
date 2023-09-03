@@ -7,11 +7,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile # TODO alterar "Profile" para o nome da classe corrta quando for criada no models.py
         
-        # O usuário vai cadastrar todos os campos definidos na classe Profile
-        # Exceto os campos selecionados no "exclude"
         # TODO necessário ajustes quando a classe Profile for criada
         fields = '__all__'
-        exclude = ('usuario', ) # Nesse caso estou considerando que o usuário será escolhido automaticamente e não pelo usuário
+        exclude = ('usuario', )
 
 
 class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário - nem todos são necessários, alguns são apenas para admins, por exemplo.
@@ -23,7 +21,7 @@ class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário 
     )
     
     password_confirmation = forms.CharField(
-        required=False, # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também
+        required=False, # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também (apenas se ele quiser atualizar)
         widget=forms.PasswordInput(),
         label='Confirmação Senha'
     )
