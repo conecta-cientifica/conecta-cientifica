@@ -1,0 +1,33 @@
+/* base/base.html  */
+
+body {
+    background-color: #eeeeee;
+}
+
+.base-navbar {
+    font-family: Rubik;
+    font-weight: 600;
+    color: #2b674f;
+}
+
+/* views/main.html */
+
+.main {
+    width: 500px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main_p {
+    font-family: Rubik;
+    font-size: 18px;
+    text-align: left;
+}
+
+#slogan {
+    font-size: 32px;
+}
+

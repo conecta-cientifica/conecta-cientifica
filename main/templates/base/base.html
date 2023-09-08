@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block 'title' %}
+    <title>Conecta Científica</title>
+    {% endblock %}
+
+    <link rel="icon" type="image/x-icon" href="{% static "img\nav-logo.svg" %}">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Style CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Google Fonts -->    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% block 'nav' %}
+      <nav class="base-navbar navbar-expand-lg d-flex align-itens-center">
+        <img src="{% static "img\nav-logo.svg"%}" width="100px" class="p-2">
+        <div class="container-fluid d-flex justify-content-end align-items-center">
+            <ul class="navbar-nav"> 
+              <li class="nav-item px-3">
+                <a class="nav-link" href="#">INÍCIO</a>
+              </li>
+              <li class="nav-item px-3">
+                <a class="nav-link" href="#">QUEM SOMOS</a>
+              </li>
+              <li class="nav-item px-3">
+                <a class="nav-link" href="#">LOGIN</a>
+              </li>
+            </ul>
+        </div>
+      </nav>
+    {% endblock %}
+    {% block 'body'%}
+    {% endblock %}
+</body>
+
+{% block 'footer' %}
+<footer class="footer text-body-secondary">
+    <div class="container fixed-bottom p-2">
+        <p class="float-end mb-1">Powered by <a href="https://www.djangoproject.com/">Django</a></p>
+        <p class="mb-1">Conecta Científica - Conectando mentes para fomentar a ciência</p>
+        <p class="mb-0">© Copyright {% now 'Y' %} <a href="">Conecta Científica</a></p>
+    </div>
+</footer>
+{% endblock %}
+</html>
