@@ -1,15 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
-from . import models
+#from . import models # TODO: ProfileForm
 
 
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = models.Profile # TODO alterar "Profile" para o nome da classe corrta quando for criada no models.py
+# class ProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = models.Profile # TODO alterar "Profile" para o nome da classe corrta quando for criada no models.py
         
-        # TODO necessário ajustes quando a classe Profile for criada
-        fields = '__all__'
-        exclude = ('usuario', )
+#         # TODO necessário ajustes quando a classe Profile for criada
+#         fields = '__all__'
+#         exclude = ('usuario', )
 
 
 class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário - nem todos são necessários, alguns são apenas para admins, por exemplo.
@@ -27,13 +27,13 @@ class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário 
     )
     
     
-    # Função personalizada (não existe no django, por isso é __init__) responsável por verificar o usuário:
-    # se for None o usuário não está conectado, se for outro, aí é possível identificar qual é o usuário
-    # A verificação deve ser feita no views.py. De lá vem a informação para essa função
-    def __init__(self, usuario=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # # Função personalizada (não existe no django, por isso é __init__) responsável por verificar o usuário:
+    # # se for None o usuário não está conectado, se for outro, aí é possível identificar qual é o usuário
+    # # A verificação deve ser feita no views.py. De lá vem a informação para essa função
+    # def __init__(self, usuario=None, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
         
-        self.usuario = usuario
+    #     self.usuario = usuario
          
     
     class Meta:
