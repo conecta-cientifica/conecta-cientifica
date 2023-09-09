@@ -1,7 +1,9 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-BR" class="h-100">
 
+{% block 'head' %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,6 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 </head>
+{% endblock %}
 
 <body>
     {% block 'nav' %}
@@ -34,7 +37,7 @@
                 <a class="nav-link" href="#">INÍCIO</a>
               </li>
               <li class="nav-item px-3">
-                <a class="nav-link" href="#">QUEM SOMOS</a>
+                <a class="nav-link" href="#">PROJETOS</a>
               </li>
               <li class="nav-item px-3">
                 <a class="nav-link" href="#">LOGIN</a>

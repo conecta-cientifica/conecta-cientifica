@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'base/base.html' %}
+
+{% block 'title' %}
     <title>Registro de Usuário</title>
-</head>
-<body>
-    <h2>Registro de Usuário</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-        <button type="submit">Registrar</button>
-    </form>
-</body>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container register d-flex justify-content-center">
+        <p class="text-primary-emphasis titulo d-flex justify-content-center py-5">REGISTRO DE USUÁRIO</p>
+        <form method="post" class="text-body">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <button class="btn btn-primary rounded-pill" type="submit">REGISTRAR</button>
+        </form>
+    </div>
+{% endblock %}
+
 </html>
