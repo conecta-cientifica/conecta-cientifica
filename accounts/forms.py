@@ -14,16 +14,37 @@ from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário - nem todos são necessários, alguns são apenas para admins, por exemplo.
     password = forms.CharField(
-        required=False, # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também
-        widget=forms.PasswordInput(),
+        required=True, #True para registro # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         label='Senha',
-        # help_text = "A senha deve conter, no mínimo, 7 caracteres, incluindo pelo menos uma letra maiúscula e uma letra minúscula."
+        help_text = "A senha deve conter, no mínimo, 7 caracteres, incluindo pelo menos uma letra maiúscula e uma letra minúscula."
     )
     
     password_confirmation = forms.CharField(
-        required=False, # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também (apenas se ele quiser atualizar)
-        widget=forms.PasswordInput(),
+        required=True, #True para registro # False porque quando o usuário está atualizando o perfil não é necessário atualizar a senha também (apenas se ele quiser atualizar)
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         label='Confirmação Senha'
+    )
+
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Nome'
+    )
+
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Sobrenome'
+    )
+
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Usuário',
+        help_text='Obrigatório. Máximo de 150 caracteres. Apenas letras, números e @/./+/-/_'
+    )
+
+    email = forms.CharField(
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label='E-mail'
     )
     
     
@@ -39,7 +60,7 @@ class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 
-                  'password', 'password_confirmation', 'email') # password está sendo deifnido no inicio da classe UserForm
+                  'password', 'password_confirmation', 'email') # password está sendo definido no inicio da classe UserForm
 
     
     def validate_password(self, password_data, password_confirmation_data, validation_error_msgs):

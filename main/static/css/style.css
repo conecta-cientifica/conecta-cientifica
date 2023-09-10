@@ -1,16 +1,22 @@
-/* base/base.html  */
+/* base.html  */
 
 body {
     background-color: #eeeeee;
+    font-family: Rubik;
 }
 
 .base-navbar {
+    height: 5vh;
     font-family: Rubik;
     font-weight: 600;
     color: #2b674f;
 }
 
-/* views/main.html */
+.footer {
+    height: 10vh;
+}
+
+/* main.html */
 
 .main {
     width: 500px;
@@ -22,7 +28,6 @@ body {
 }
 
 .main_p {
-    font-family: Rubik;
     font-size: 18px;
     text-align: left;
 }
@@ -31,3 +36,15 @@ body {
     font-size: 32px;
 }
 
+/* register.html */
+
+.titulo {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.register {
+    width: max-content;
+    height: 85vh;
+    flex-direction: column;
+}
