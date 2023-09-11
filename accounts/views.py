@@ -19,7 +19,7 @@ def register(request):
             # profile.usuario = user
             # profile.save()
             login(request, user)
-            return redirect('página_de_sucesso')
+            return(redirect('login'))
     else:
         user_form = UserForm()
         # TODO: ProfileForm
