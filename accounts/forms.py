@@ -1,15 +1,19 @@
 from django import forms
 from django.contrib.auth.models import User
-#from . import models # TODO: ProfileForm
+from django.contrib.auth.forms import AuthenticationForm
 
 
-# class ProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = models.Profile # TODO alterar "Profile" para o nome da classe corrta quando for criada no models.py
-        
-#         # TODO necessário ajustes quando a classe Profile for criada
-#         fields = '__all__'
-#         exclude = ('usuario', )
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Usuário'
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        label='Senha'
+    )
+
 
 
 class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário - nem todos são necessários, alguns são apenas para admins, por exemplo.
