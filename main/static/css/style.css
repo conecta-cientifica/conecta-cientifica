@@ -43,7 +43,7 @@ body {
     font-weight: 600;
 }
 
-.register {
+.register-login {
     width: max-content;
     height: 85vh;
     flex-direction: column;

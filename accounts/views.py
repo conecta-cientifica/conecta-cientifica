@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import UserForm, LoginForm#, ProfileForm # TODO: ProfileForm
 from django.http import HttpResponse
