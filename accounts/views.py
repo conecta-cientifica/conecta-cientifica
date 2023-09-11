@@ -1,6 +1,10 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from .forms import UserForm, LoginForm #, ProfileForm # TODO: ProfileForm
+from .forms import UserForm, LoginForm#, ProfileForm # TODO: ProfileForm
+from django.http import HttpResponse
+from django.contrib import auth
+import pdb
+from main import views 
 
 def register(request):
     if request.method == 'POST':
@@ -22,19 +26,23 @@ def register(request):
         #profile_form = ProfileForm()
     return render(request, 'register.html', {'user_form': user_form, })#'profile_form': profile_form}) # TODO: ProfileForm
 
-
-def login_view(request):
+def login(request):
+    #pdb.set_trace()
     if request.method == 'POST':
-        login_form = LoginForm(data=request.POST)
+        login_form = LoginForm(request.POST)
         if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            username = login_form['username'].value()
+            password = login_form['password'].value()
+            user = auth.authenticate(
+                request,
+                username=username,
+                password=password
+            )
             if user is not None:
-                login(request, user)
-                # Redirecionar para a página de sucesso ou qualquer outra página desejada após o login bem-sucedido.
-                return redirect('página_de_sucesso')
+                auth.login(request, user)
+                return(redirect(views.main_view))
+            else:
+                return(redirect('login'))
     else:
         login_form = LoginForm()
-
-    return render(request, 'login.html', {'login_form': login_form})
+        return(render(request, 'login.html',  {'login_form': login_form,}))
