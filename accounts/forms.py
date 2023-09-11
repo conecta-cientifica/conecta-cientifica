@@ -144,3 +144,25 @@ class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário 
             raise(forms.ValidationError(validation_error_msgs))
         
        
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label='username',
+        required=True,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+
+    password = forms.CharField(
+        label='senha',
+        required=True,
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )

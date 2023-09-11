@@ -1,6 +1,10 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from .forms import UserForm#, ProfileForm # TODO: ProfileForm
+from .forms import UserForm, LoginForm#, ProfileForm # TODO: ProfileForm
+from django.http import HttpResponse
+from django.contrib import auth
+import pdb
+from main import views 
 
 def register(request):
     if request.method == 'POST':
@@ -21,3 +25,24 @@ def register(request):
         # TODO: ProfileForm
         #profile_form = ProfileForm()
     return render(request, 'register.html', {'user_form': user_form, })#'profile_form': profile_form}) # TODO: ProfileForm
+
+def login(request):
+    #pdb.set_trace()
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            username = login_form['username'].value()
+            password = login_form['password'].value()
+            user = auth.authenticate(
+                request,
+                username=username,
+                password=password
+            )
+            if user is not None:
+                auth.login(request, user)
+                return(redirect(views.main_view))
+            else:
+                return(redirect('login'))
+    else:
+        login_form = LoginForm()
+        return(render(request, 'login.html',  {'login_form': login_form,}))
