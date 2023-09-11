@@ -52,13 +52,13 @@ class UserForm(forms.ModelForm): # Quais campos serão exibidos para o usuário 
     )
     
     
-    # # Função personalizada (não existe no django, por isso é __init__) responsável por verificar o usuário:
-    # # se for None o usuário não está conectado, se for outro, aí é possível identificar qual é o usuário
-    # # A verificação deve ser feita no views.py. De lá vem a informação para essa função
-    # def __init__(self, usuario=None, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+    # Função personalizada (não existe no django, por isso é __init__) responsável por verificar o usuário:
+    # se for None o usuário não está conectado, se for outro, aí é possível identificar qual é o usuário
+    # A verificação deve ser feita no views.py. De lá vem a informação para essa função
+    def __init__(self, usuario=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         
-    #     self.usuario = usuario
+        self.usuario = usuario
          
     
     class Meta:
