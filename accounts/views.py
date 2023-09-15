@@ -5,6 +5,13 @@ from django.http import HttpResponse
 from django.contrib import auth
 import pdb
 from main import views 
+from google.oauth2 import id_token
+from google.auth.transport.requests import Request
+from django.conf import settings
+from django.http import HttpResponseRedirect
+
+CLIENT_ID = settings.CLIENT_ID # Usado na autenticação do google
+
 
 def register(request):
     if request.method == 'POST':
@@ -45,4 +52,4 @@ def login(request):
                 return(redirect('login'))
     else:
         login_form = LoginForm()
-        return(render(request, 'login.html',  {'login_form': login_form,}))
+        return(render(request, 'login.html',  {'login_form': login_form, 'CLIENT_ID': CLIENT_ID}))

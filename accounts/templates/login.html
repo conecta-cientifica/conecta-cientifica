@@ -12,5 +12,21 @@
             {{ login_form.as_p }}
             <button class="btn btn-primary rounded-pill" type="submit">LOGIN</button>
         </form>
-    </div>
-{% endblock %}
+
+        <br>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <div id="g_id_onload"
+            data-client_id="{{ CLIENT_ID }}"
+            data-login_uri="http://localhost:8000/login/"
+            data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+            data-type="standard"
+            data-size="large"
+            data-theme="outline"
+            data-text="sign_in_with"
+            data-shape="rectangular"
+            data-logo_alignment="left">
+        </div>
+    {% endblock %}
+
