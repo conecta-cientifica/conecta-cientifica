@@ -1,0 +1,172 @@
+%%
+%% Customizações do abnTeX2 (http://abnTeX2.googlecode.com) para a Universidade XXXX
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is SEU_NOME, SEU_EMAIL
+%%
+%% Further information about abnTeX2 are available on https://github.com/abntex/abntex2
+%%
+
+% ---
+% INICIO DAS CUSTOMIZACOES
+% ---
+
+\usepackage{color} %include colors
+\usepackage[T1]{fontenc} %include font support
+\usepackage{lmodern} %make fonts look better
+\usepackage{tikz}
+%\usepackage{kpfonts}
+\usepackage[explicit]{titlesec}
+
+\ProvidesPackage{conecta}[2023/09/13 Criacao desta customizacao do abnTeX2]
+
+% alterando a capa
+\renewcommand{\imprimircapa}{%
+  \begin{capa}%
+  	
+  	\newgeometry{margin=0cm}
+  	\includegraphics[width=9cm]{imagens/Logo_cinza_capa.png}
+  	\vspace{.25cm}
+  	\setlength{\fboxsep}{0pt}
+  	\hfill \colorbox{azulClaro}{\makebox[8cm][r]{\shortstack[r]{\vspace{8cm}}}}%
+%  	\hfill \colorbox{azulClaro}{\hspace{.25in} \parbox{2.97in}{\vspace{2.75in}}}%
+  	\vspace{-0.25cm}
+  	\setlength{\fboxsep}{10pt}
+  	\setlength{\fboxrule}{0pt}
+  	\colorbox{azulMedio}{\makebox[20.3cm][l]{\hfill \shortstack[r]{\fontsize{36}{36}\rmfamily\color{white} \imprimirtitulo \\ \\ \\%
+  				\fontsize{24}{24}\rmfamily\color{white} \imprimirtipotrabalho}}}%
+  	\setlength{\fboxsep}{0pt}
+  	\vspace{-8.5pt}
+  	\hfill \colorbox{azulClaro}{\hspace{.25in} \parbox{7.2cm}{\vspace{10.5cm} \color{white} \textbf{\imprimirinstituicao \\ \today \\ \imprimirlocal \vspace{7.3cm} \vfill}}}%
+  	\let\Title\@title
+  	\restoregeometry
+  	
+  \end{capa}
+}
+
+
+% folha de rosto 
+
+\makeatletter
+
+%\renewcommand{\folhaderostocontent}{
+%\begin{center}
+%{\ABNTEXchapterfont\Large UNIVERSIDADE QUE TORNA OS DOCUMENTOS AINDA MAIS ESTRANHOS}
+%    
+%    \vspace*{1cm}
+%    
+%{\ABNTEXchapterfont\large\imprimirautor}
+%
+%\vspace*{\fill}\vspace*{\fill}
+%
+%\begin{center}
+%\ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+%\end{center}
+%
+%\vspace*{\fill}
+%
+%\abntex@ifnotempty{\imprimirpreambulo}{%
+%  \hspace{.45\textwidth}
+%  \begin{minipage}{.5\textwidth}
+%  \SingleSpacing
+%  \imprimirpreambulo
+%  \end{minipage}%
+%  \vspace*{\fill}
+%}%
+%
+%{\large\imprimirorientadorRotulo~\imprimirorientador\par}
+%
+%\abntex@ifnotempty{\imprimircoorientador}{%
+%  {\large\imprimircoorientadorRotulo~\imprimircoorientador}%
+%}%
+%
+%\vspace*{\fill}
+%
+%{\abntex@ifnotempty{\imprimirinstituicao}{\imprimirinstituicao\vspace*{\fill}}}
+%
+%{\large\imprimirlocal}
+%
+%\par
+%
+%{\large\imprimirdata}
+%\vspace*{1cm}
+%\end{center}
+%}
+
+\makeatother
+
+
+%%criar um novo estilo de cabeçalhos e rodapés
+\makepagestyle{meuestilo}
+
+%%cabeçalhos
+%	\makeevenhead{meuestilo} %%pagina par
+%	{\thepage}
+%	{}
+%	{\textit{Capitulo 1}}
+%	\makeoddhead{meuestilo} %%pagina ímpar ou com oneside
+%	{\textit{Capitulo 1}}
+%	{}
+%	{\thepage}
+%	\makeheadrule{meuestilo}{\textwidth}{\normalrulethickness} %linha
+
+	\makeevenhead{meuestilo}
+	{\thepage\hskip.35cm\vrule\hskip.35cm\leftmark\\\includegraphics[width=\textwidth]{imagens/blue_lines.png}}
+	{}
+	{}
+	\makeoddhead{meuestilo}
+	{}
+	{}
+	{\leftmark\hskip.35cm\vrule\hskip.35cm\thepage\\\includegraphics[width=\textwidth]{imagens/blue_lines.png}} 
+
+
+%% rodapé
+	\makeevenfoot{meuestilo}
+	{\vskip2cm\includegraphics[width=2.5cm]{imagens/Logo_cinza_png.png}} %%pagina par
+	{}
+	{\emph\rightmark}
+%	{\vskip1.5cm\textcopyright\hskip.15cm\imprimirinstituicao} 
+	\makeoddfoot{meuestilo} %%pagina ímpar ou com oneside
+%	{\vskip1.5cm\textcopyright\hskip.15cm\imprimirinstituicao}
+	{\emph\rightmark}
+	{}
+	{\vskip2cm\includegraphics[width=2.5cm]{imagens/Logo_cinza_png.png}}
+	
+%%% chapter first page
+
+\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
+%\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
+
+\newcommand*\chapterlabel{}
+\titleformat{\chapter}
+{\gdef\chapterlabel{}
+	\normalfont\sffamily\Huge\bfseries\scshape}
+{\gdef\chapterlabel{\thechapter\ }}{0pt}
+{\begin{tikzpicture}[remember picture,overlay]
+	\node[yshift=-3cm] at (current page.north west)
+	{\begin{tikzpicture}[remember picture, overlay]
+		\draw[fill=azulClaro] (0,0) rectangle
+		(\paperwidth,3cm);
+		\node[anchor=east,xshift=.9\paperwidth,rectangle,
+		rounded corners=5pt,inner sep=10pt,
+		fill=azulEscuro]
+		{\color{white}\chapterlabel#1};
+		\end{tikzpicture}
+	};
+\end{tikzpicture}
+}
+\titlespacing*{\chapter}{0pt}{50pt}{-40pt}
+
+
+% ---
+% FIM DAS CUSTOMIZACOES PARA A UNIVERSIDADE XXX
+% ---
