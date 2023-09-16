@@ -1,48 +1,33 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from .forms import UserForm, LoginForm#, ProfileForm # TODO: ProfileForm
-from django.http import HttpResponse
+from .forms import UserForm, LoginForm
 from django.contrib import auth
 import pdb
 from main import views 
+from django.conf import settings
 
-def register(request):
+
+def register_view(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        #profile_form = ProfileForm(request.POST)
-        if user_form.is_valid(): #and profile_form.is_valid():
+        if user_form.is_valid(): 
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
             user.save()
-            # TODO: ProfileForm
-            # profile = profile_form.save(commit=False)
-            # profile.usuario = user
-            # profile.save()
-            login(request, user)
+            auth.login(request, user)
             return(redirect('login'))
     else:
         user_form = UserForm()
-        # TODO: ProfileForm
-        #profile_form = ProfileForm()
-    return render(request, 'register.html', {'user_form': user_form, })#'profile_form': profile_form}) # TODO: ProfileForm
+    return render(request, 'register.html', {'user_form': user_form})
 
-def login(request):
-    #pdb.set_trace()
+
+def login_view(request):
     if request.method == 'POST':
-        login_form = LoginForm(request.POST)
+        login_form = LoginForm(request, data=request.POST)
         if login_form.is_valid():
-            username = login_form['username'].value()
-            password = login_form['password'].value()
-            user = auth.authenticate(
-                request,
-                username=username,
-                password=password
-            )
-            if user is not None:
-                auth.login(request, user)
-                return(redirect(views.main_view))
-            else:
-                return(redirect('login'))
+            user = login_form.get_user()
+            auth.login(request, user)
+            return redirect(views.main_view)
     else:
         login_form = LoginForm()
-        return(render(request, 'login.html',  {'login_form': login_form,}))
+    return render(request, 'login.html', {'login_form': login_form, 'CLIENT_ID': settings.CLIENT_ID})

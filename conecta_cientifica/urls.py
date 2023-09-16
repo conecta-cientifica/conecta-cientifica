@@ -21,7 +21,7 @@ from main import urls as main_app_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
     path('', include(main_app_urls))
 ]
