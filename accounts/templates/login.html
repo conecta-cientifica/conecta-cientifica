@@ -5,28 +5,45 @@
 {% endblock %}
 
 {% block 'body' %}
-    <div class="container register-login d-flex justify-content-center">
-        <p class="text-primary-emphasis titulo d-flex justify-content-center py-5">LOGIN</p>
-        <form method="post" class="text-body">
-            {% csrf_token %}
-            {{ login_form.as_p }}
-            <button class="btn btn-primary rounded-pill" type="submit">LOGIN</button>
-        </form>
+    <div class="container d-flex align-align-items-center login">
+        <div class="container register-login d-flex justify-content-center">
+            <p class="text-primary-emphasis titulo d-flex justify-content-center py-5">LOGIN</p>
+            <form method="post" class="text-body">
+                {% csrf_token %}
+                {{ login_form.as_p }}
+                <button class="btn btn-primary rounded-pill login-button mt-3 mb-4" type="submit">ENTRAR</button>
+            </form>
 
-        <br>
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <div id="g_id_onload"
-            data-client_id="{{ CLIENT_ID }}"
-            data-login_uri="http://localhost:8000/login/"
-            data-auto_prompt="false">
+            <a href="#" class="forgot-password">Esqueceu a senha?</a>
+
+            <div class="container d-flex align-items-baseline mt-5">
+                <hr class="line p-1">
+                <p class="align-text-center"> OU </p>
+                <hr class="line p-1">
+            </div>        
+
+            <br>
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <div id="g_id_onload"
+                data-client_id="{{ CLIENT_ID }}"
+                data-login_uri="http://localhost:8000/login/"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="sign_in_with"
+                data-shape="rectangular"
+                data-logo_alignment="left">
+            </div>
         </div>
-        <div class="g_id_signin"
-            data-type="standard"
-            data-size="large"
-            data-theme="outline"
-            data-text="sign_in_with"
-            data-shape="rectangular"
-            data-logo_alignment="left">
+
+        <div class="login-text text-dark d-flex justify-content-center">
+            <p id="slogan" class="pb-4">Entre no <em><strong><span class="text-primary-emphasis">Conecta Científica</span></strong></em>!</p>
+            <p id="slogan" class="pb-4"><em><strong><span class="text-primary-emphasis">Conecte-se</span></strong></em> com oportunidades de pesquisa, mentes brilhantes e o futuro da ciência.</p>
+            <p id="slogan">Junte-se à nossa comunidade e inicie a sua jornada <em><strong><span class="text-primary-emphasis">científica</span></strong></em> agora.</p>
         </div>
+    </div>
     {% endblock %}
 

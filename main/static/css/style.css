@@ -21,6 +21,10 @@ body {
     margin-top: auto;
 }
 
+.btn {
+    background-color: #2b674f;
+}
+
 /* main.html */
 
 .main {
@@ -42,7 +46,7 @@ body {
     font-size: 32px;
 }
 
-/* register.html */
+/* register.html + login.html */
 
 .titulo {
     font-size: 32px;
@@ -53,5 +57,34 @@ body {
     width: max-content;
     flex-direction: column;
     margin-bottom: 60px;
-    flex-grow: 1;
+    flex: 1;
+    padding-right: 60px;
+    padding-left: 60px;
+}
+
+.login {
+    height: 85vh;
+}
+
+.login-text {
+    flex-direction: column;
+    flex: 2;
+    padding: 60px;
+}
+
+.login-button {
+    width: 100%;
+}
+
+.line {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #000; /* Estilo da linha horizontal */
+    margin: 0 10px; /* Espaçamento entre as linhas e parágrafos */
+}
+
+.forgot-password {
+    text-decoration: none;
+    color: #2b674f;
+    font-weight: 600;
 }
