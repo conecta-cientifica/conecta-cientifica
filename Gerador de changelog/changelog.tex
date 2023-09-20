@@ -100,9 +100,8 @@ english,			% idioma adicional para hifenização
 % Configurações de aparência do PDF final
 
 % alterando o aspecto da cor azul
-\definecolor{azulClaro}{RGB}{0,173,239}
-\definecolor{azulMedio}{RGB}{0,132,181}
-\definecolor{azulEscuro}{RGB}{0,90,126}
+\definecolor{verdeClaro}{RGB}{60, 144, 110}
+\definecolor{verdeEscuro}{RGB}{43,103,79}
 \definecolor{cinza}{RGB}{50,62,72}
 
 % informações do PDF
@@ -171,7 +170,7 @@ english,			% idioma adicional para hifenização
 	\subsection*{\textbf{Bugfix:}}
 	\begin{itemize} \setlength\itemsep{0em}
 
-		\item .
+		\item   
 
 	\end{itemize}
 
@@ -187,6 +186,9 @@ english,			% idioma adicional para hifenização
 		\item Implementação do login usando o Google.
 		\item Refatoração de View e Forms.
 		\item Refatoração das rotas do site
+		\item Refatoração da estilização da página de login
+		\item Adicionar condições para mostrar cada link do header dependendo da URL
+		\item Mudar cores dos botões
 		\item Refatoração: Modificado DB para Postgres em nuvem
 
 	\end{itemize}
@@ -195,6 +197,7 @@ english,			% idioma adicional para hifenização
 	\begin{itemize} \setlength\itemsep{0em}
 
 		\item Correção de bugs do login com o Google: carregamento da página (a página estava carregando apenas em abas anônimas, agora carrega em qualquer modo)
+		\item Correção posicionamento do footer - acompanha a resolução da tela, sem sobrepor o conteúdo do body
 
 	\end{itemize}
 
