@@ -39,7 +39,7 @@ class YourAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Verifique se a resposta é um redirecionamento
         self.assertRedirects(response, reverse('login'))  # Verifique se o redirecionamento está correto
 
-    def test_worong_register_view(self):
+    def test_register_view_invalid(self):
         # Senha sem letra maiuscula
         user_data = {
             'username': 'joe',
@@ -76,7 +76,7 @@ class YourAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Verifique se a resposta é um redirecionamento
         self.assertRedirects(response, reverse(views.main_view))  # Verifique se o redirecionamento está correto
 
-    def test_wrong_login_view(self):
+    def test_login_view_invalid(self):
         # Teste o login de um usuário nao cadastrado no banco
         login_data = {
             'username': 'invalido',
@@ -98,49 +98,43 @@ class YourAppTestCase(TestCase):
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())  # Verifique se o formulário é válido
 
-    def test_wrong_user_form(self):
+    def test_user_form_invalid(self):
         # Teste a validação do formulário faltando campo
         form_data = QueryDict('password=Test12345&password_confirmation=Test12345&first_name=Joe&last_name=Doe&email=joe@example.com')
         form = UserForm(data=form_data)
-        self.assertTrue(not form.is_valid())  # Verifique se o formulário é inválido
+        self.assertFalse(form.is_valid())  # Verifique se o formulário é inválido
 
         # Teste a validação do formulário com senha invalida
         form_data = QueryDict('username=joe&password=test12345&password_confirmation=test12345&first_name=Joe&last_name=Doe&email=joe@example.com')
         form = UserForm(data=form_data)
-        self.assertTrue(not form.is_valid())  # Verifique se o formulário é inválido
+        self.assertFalse(form.is_valid())  # Verifique se o formulário é inválido
 
         # Teste a validação do formulário com senha diferente da confirmação
         form_data = QueryDict('username=joe&password=Test12345&password_confirmation=Senhadiferente&first_name=Joe&last_name=Doe&email=joe@example.com')
         form = UserForm(data=form_data)
-        self.assertTrue(not form.is_valid())  # Verifique se o formulário é válido        
+        self.assertFalse(form.is_valid())  # Verifique se o formulário é válido        
 
-    # def test_user_form_invalid(self):
-    #     # Teste a validação do formulário de usuário com dados inválidos
-    #     form_data = {
-    #         'username': 'testuser',
-    #         'password': 'password',  # Senha inválida
-    #         'password_confirmation': 'password_confirmation',  # Confirmação de senha inválida
-    #         'first_name': 'Test',
-    #         'last_name': 'User',
-    #         'email': 'test@example.com'
-    #     }
-    #     form = UserForm(data=form_data)
-    #     self.assertFalse(form.is_valid())  # Verifique se o formulário não é válido
+    def test_login_form(self):
+        # Testa a validação do formulário de login
+        login_data = {
+            'username': 'testuser',
+            'password': 'Test12345'
+        }
+        form = LoginForm(data=login_data)
+        self.assertTrue(form.is_valid())  # Verifique se o formulário de login é válido
 
-    # def test_login_form(self):
-    #     # Teste a validação do formulário de login
-    #     login_data = {
-    #         'username': 'testuser',
-    #         'password': 'Test12345'
-    #     }
-    #     form = LoginForm(data=login_data)
-    #     self.assertTrue(form.is_valid())  # Verifique se o formulário de login é válido
+    def test_login_form_invalid(self):
+        # Testa a validação do formulário de login com dados inválidos
+        login_data = {
+            'username': 'testuser',
+            'password': 'wrongpassword'  # Senha incorreta
+        }
+        form = LoginForm(data=login_data)
+        self.assertFalse(form.is_valid())  # Verifique se o formulário de login não é válido
 
-    # def test_login_form_invalid(self):
-    #     # Teste a validação do formulário de login com dados inválidos
-    #     login_data = {
-    #         'username': 'testuser',
-    #         'password': 'wrongpassword'  # Senha incorreta
-    #     }
-    #     form = LoginForm(data=login_data)
-    #     self.assertFalse(form.is_valid())  # Verifique se o formulário de login não é válido
+        # Teste a validação do formulário de login com dados faltantes
+        login_data = {
+            'password': 'Correctgpassword' 
+        }
+        form = LoginForm(data=login_data)
+        self.assertFalse(form.is_valid())  # Verifique se o formulário de login não é válido
