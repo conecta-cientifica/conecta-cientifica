@@ -8,6 +8,21 @@ from main import views
 
 class YourAppTestCase(TestCase):
 
+    def setUp(self):
+        # Crie dados de exemplo para teste
+        self.user_data = {
+            'username': 'testuser',
+            'password': 'Test12345',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'email': 'test@example.com'
+        }
+        self.user = User.objects.create_user(**self.user_data)
+
+    def tearDown(self):
+        # Apague o usuário após cada teste
+        self.user.delete()
+
     def test_register_view(self):
         user_data = {
             'username': 'joe',
@@ -23,17 +38,6 @@ class YourAppTestCase(TestCase):
         self.assertRedirects(response, reverse('login'))  # Verifique se o redirecionamento está correto
 
     def test_login_view(self):
-
-        # Crie dados de exemplo para teste
-        user_data = {
-            'username': 'testuser',
-            'password': 'Test12345',
-            'first_name': 'Test',
-            'last_name': 'User',
-            'email': 'test@example.com'
-        }
-        User.objects.create_user(**user_data)
-
         # Teste o login de um usuário
         login_data = {
             'username': 'testuser',
