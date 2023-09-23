@@ -37,6 +37,33 @@ class YourAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)  # Verifique se a resposta é um redirecionamento
         self.assertRedirects(response, reverse('login'))  # Verifique se o redirecionamento está correto
 
+    def test_worong_register_view(self):
+        # Senha sem letra maiuscula
+        user_data = {
+            'username': 'joe',
+            'password': 'semletramaiuscula',
+            'password_confirmation': 'semletramaiuscula',
+            'first_name': 'Joe',
+            'last_name': 'Doe',
+            'email': 'joe@example.com'
+        }
+        # Teste o registro de um usuário
+        response = self.client.post(reverse('register'), data=user_data)
+        self.assertEqual(response.status_code, 200)
+
+        # Sem um campo
+        user_data = {
+            'password': 'semletramaiuscula',
+            'password_confirmation': 'semletramaiuscula',
+            'first_name': 'Joe',
+            'last_name': 'Doe',
+            'email': 'joe@example.com'
+        }
+        # Teste o registro de um usuário
+        response = self.client.post(reverse('register'), data=user_data)
+        self.assertEqual(response.status_code, 200)
+
+
     def test_login_view(self):
         # Teste o login de um usuário
         login_data = {
@@ -46,6 +73,15 @@ class YourAppTestCase(TestCase):
         response = self.client.post(reverse('login'), data=login_data)
         self.assertEqual(response.status_code, 302)  # Verifique se a resposta é um redirecionamento
         self.assertRedirects(response, reverse(views.main_view))  # Verifique se o redirecionamento está correto
+
+    def test_wrong_login_view(self):
+        # Teste o login de um usuário nao cadastrado no banco
+        login_data = {
+            'username': 'invalido',
+            'password': 'Test12345'
+        }
+        response = self.client.post(reverse('login'), data=login_data)
+        self.assertEqual(response.status_code, 200)
 
     # def test_user_form(self):
     #     # Teste a validação do formulário de usuário
