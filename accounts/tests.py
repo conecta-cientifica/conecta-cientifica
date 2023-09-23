@@ -104,6 +104,16 @@ class YourAppTestCase(TestCase):
         form = UserForm(data=form_data)
         self.assertTrue(not form.is_valid())  # Verifique se o formulário é inválido
 
+        # Teste a validação do formulário com senha invalida
+        form_data = QueryDict('username=joe&password=test12345&password_confirmation=test12345&first_name=Joe&last_name=Doe&email=joe@example.com')
+        form = UserForm(data=form_data)
+        self.assertTrue(not form.is_valid())  # Verifique se o formulário é inválido
+
+        # Teste a validação do formulário com senha diferente da confirmação
+        form_data = QueryDict('username=joe&password=Test12345&password_confirmation=Senhadiferente&first_name=Joe&last_name=Doe&email=joe@example.com')
+        form = UserForm(data=form_data)
+        self.assertTrue(not form.is_valid())  # Verifique se o formulário é válido        
+
     # def test_user_form_invalid(self):
     #     # Teste a validação do formulário de usuário com dados inválidos
     #     form_data = {
