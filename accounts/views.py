@@ -9,13 +9,13 @@ from django.conf import settings
 
 def register_view(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
+        user_form = UserForm(data=request.POST)
         if user_form.is_valid(): 
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
             user.save()
             auth.login(request, user)
-            return(redirect('login'))
+            return redirect('login')
     else:
         user_form = UserForm()
     return render(request, 'register.html', {'user_form': user_form})
