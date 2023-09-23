@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from . import views
 from main import views 
-# from .forms import UserForm, LoginForm
+from .forms import UserForm, LoginForm
+from django.http import QueryDict
+
 
 
 class YourAppTestCase(TestCase):
@@ -83,18 +85,18 @@ class YourAppTestCase(TestCase):
         response = self.client.post(reverse('login'), data=login_data)
         self.assertEqual(response.status_code, 200)
 
-    # def test_user_form(self):
-    #     # Teste a validação do formulário de usuário
-    #     form_data = {
-    #         'username': 'testuser',
-    #         'password': 'Test12345',
-    #         'password_confirmation': 'Test12345',
-    #         'first_name': 'Test',
-    #         'last_name': 'User',
-    #         'email': 'test@example.com'
-    #     }
-    #     form = UserForm(data=form_data)
-    #     self.assertTrue(form.is_valid())  # Verifique se o formulário é válido
+        # Faltando um campo
+        login_data = {
+            'password': 'Test12345'
+        }
+        response = self.client.post(reverse('login'), data=login_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_form(self):
+        # Teste a validação do formulário de usuário
+        form_data = QueryDict('username=joe&password=Test12345&password_confirmation=Test12345&first_name=Joe&last_name=Doe&email=joe@example.com')
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())  # Verifique se o formulário é válido
 
     # def test_user_form_invalid(self):
     #     # Teste a validação do formulário de usuário com dados inválidos
