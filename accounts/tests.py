@@ -98,6 +98,12 @@ class YourAppTestCase(TestCase):
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())  # Verifique se o formulário é válido
 
+    def test_wrong_user_form(self):
+        # Teste a validação do formulário faltando campo
+        form_data = QueryDict('password=Test12345&password_confirmation=Test12345&first_name=Joe&last_name=Doe&email=joe@example.com')
+        form = UserForm(data=form_data)
+        self.assertTrue(not form.is_valid())  # Verifique se o formulário é inválido
+
     # def test_user_form_invalid(self):
     #     # Teste a validação do formulário de usuário com dados inválidos
     #     form_data = {
