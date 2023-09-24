@@ -124,6 +124,7 @@ body {
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    overflow-y: auto;
 }
 
 .profile-picture {
@@ -193,6 +194,7 @@ body {
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    overflow-y: auto;
 }
 
 .formacao-pesquisa li {
