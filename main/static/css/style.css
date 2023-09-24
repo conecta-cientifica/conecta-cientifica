@@ -88,3 +88,115 @@ body {
     color: #2b674f;
     font-weight: 600;
 }
+
+.btn.btn-outline-info {
+    background-color: #ffffff;
+    border: 1px solid #2b674f;
+    color: #2b674f;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn.btn-outline-info:hover {
+    background-color: #2b674f;
+    color: #ffffff;
+}
+
+.btn.btn-outline-info a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.google-logo {
+    margin-right: 10px; 
+    height: 24px; 
+}
+
+/* user-profile.html */
+
+.top-infos {
+    position: relative;
+    width: 1300vh;
+    height: 25vh;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.profile-picture {
+    width: 19vh;
+    height: 19vh;
+    overflow: hidden;
+}
+
+.profile-picture img {
+    max-width: 100%;
+    max-height: 100%; 
+    width: auto;
+    height: auto;
+}
+
+.top-infos-uteis {
+    height: 19vh;
+    width: fit-content;
+    flex-direction: column;
+}
+
+.top-infos-endereco {
+    height: 19vh;
+    width: fit-content;
+}
+
+.top-infos-uteis h1, .top-infos-endereco h1 {
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.top-infos-uteis p, .top-infos-endereco p {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.vertical-line {
+    position: absolute;
+    width: 1px; 
+    height: 19vh;
+    background-color: #d9d9d9;  
+    transform: translateX(-50%);
+}
+
+.btn.btn-light {
+    background-color: #eeeeee;
+}
+
+.btn-lattes {
+    width: fit-content;
+}
+
+.btn-lattes a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.lattes-logo {
+    margin-right: 10px; 
+    height: 24px; 
+}
+
+.formacao-pesquisa {
+    position: relative;
+    width: 1300vh;
+    height: 55vh;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+.formacao-pesquisa li {
+    font-weight: 600;
+}
