@@ -2,7 +2,7 @@
 {% load socialaccount %}
 
 {% block 'title' %}
-    <title>Login</title>
+    <title>Conecta Científica - Login</title>
 {% endblock %}
 
 {% block 'body' %}
@@ -23,48 +23,13 @@
                 <hr class="line p-1">
             </div>        
 
-            <br>
-            <button class="btn btn-outline-info">
+            <button class="btn btn-outline-info mt-4">
                 <a href="{% provider_login_url 'google' %}?next=/">
                     <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" class="google-logo">
                     Login com o Google
                 </a>
-            </button>
-            
-            <style>
-                .btn.btn-outline-info {
-                    background-color: #ffffff;
-                    border: 1px solid #2b674f;
-                    color: #2b674f;
-                    padding: 10px 20px;
-                    text-decoration: none;
-                    display: inline-block;
-                    border-radius: 5px;
-                    transition: background-color 0.3s, color 0.3s;
-                }
-            
-                .btn.btn-outline-info:hover {
-                    /* Estilos quando o botão é hover */
-                    background-color: #2b674f;
-                    color: #ffffff;
-                }
-            
-                .btn.btn-outline-info a {
-                    /* Estilos para o link dentro do botão */
-                    text-decoration: none;
-                    color: inherit;
-                }
-            
-                .google-logo {
-                    /* Estilos para o logotipo do Google */
-                    margin-right: 10px; /* Espaço entre o logotipo e o texto */
-                    height: 24px; /* Altura do logotipo (ajuste conforme necessário) */
-                }
-            </style>
-            
+            </button>                    
         </div>
-
-        
 
         <div class="login-text text-dark d-flex justify-content-center">
             <p id="slogan" class="pb-4">Entre no <em><strong><span class="text-primary-emphasis">Conecta Científica</span></strong></em>!</p>

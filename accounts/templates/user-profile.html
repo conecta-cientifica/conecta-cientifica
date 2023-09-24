@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
+    <title>Conecta Científica - Perfil</title>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container top-infos mt-3 d-flex justify-content-around align-items-center">
+        <div class="container profile-picture d-flex justify-content-center align-items-center">
+            <img src="{% static "img\nav-logo.svg"%}">
+        </div>
+        <div class="container top-infos-uteis d-flex justify-content-around">
+            <h1 class="text-dark">Nome Completo</h1>
+            <p class="text-dark">Instituição de ensino (vínculo atual)</p>
+            <button class="btn btn-light btn-lattes rounded-pill">
+                <a href="#">
+                    <img src="{% static "img\lattes-logo.png"%}" alt="Lattes Logo" class="lattes-logo">
+                    Currículo Lattes
+                </a>
+            </button>
+        </div>
+        <div class="vertical-line"></div>
+        <div class="container top-infos-endereco">
+            <h1 class="text-dark">Endereço Profissional</h1>
+            <p class="text-dark">
+                Universidade Federal de São Paulo <br>
+                Campus São José dos Campos, Instituto de Ciência e Tecnologia. <br>
+                Rua tal, número, bairro - sala xxx <br>
+                99999999 - São José dos Campos, SP - Brasil <br>
+                Telefone: (12) xxxxxxxx <br>
+            </p>
+        </div>
+    </div>
+{% endblock %}
