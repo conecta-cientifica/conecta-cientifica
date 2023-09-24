@@ -185,3 +185,16 @@ body {
     margin-right: 10px; 
     height: 24px; 
 }
+
+.formacao-pesquisa {
+    position: relative;
+    width: 1300vh;
+    height: 55vh;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.formacao-pesquisa li {
+    font-weight: 600;
+}
