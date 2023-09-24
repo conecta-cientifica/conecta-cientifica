@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load socialaccount %}
 
 {% block 'title' %}
     <title>Login</title>
@@ -23,21 +24,47 @@
             </div>        
 
             <br>
-            <script src="https://accounts.google.com/gsi/client" async defer></script>
-            <div id="g_id_onload"
-                data-client_id="{{ CLIENT_ID }}"
-                data-login_uri="http://localhost:8000/login/"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin"
-                data-type="standard"
-                data-size="large"
-                data-theme="outline"
-                data-text="sign_in_with"
-                data-shape="rectangular"
-                data-logo_alignment="left">
-            </div>
+            <button class="btn btn-outline-info">
+                <a href="{% provider_login_url 'google' %}?next=/">
+                    <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" class="google-logo">
+                    Login com o Google
+                </a>
+            </button>
+            
+            <style>
+                .btn.btn-outline-info {
+                    background-color: #ffffff;
+                    border: 1px solid #2b674f;
+                    color: #2b674f;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    display: inline-block;
+                    border-radius: 5px;
+                    transition: background-color 0.3s, color 0.3s;
+                }
+            
+                .btn.btn-outline-info:hover {
+                    /* Estilos quando o botão é hover */
+                    background-color: #2b674f;
+                    color: #ffffff;
+                }
+            
+                .btn.btn-outline-info a {
+                    /* Estilos para o link dentro do botão */
+                    text-decoration: none;
+                    color: inherit;
+                }
+            
+                .google-logo {
+                    /* Estilos para o logotipo do Google */
+                    margin-right: 10px; /* Espaço entre o logotipo e o texto */
+                    height: 24px; /* Altura do logotipo (ajuste conforme necessário) */
+                }
+            </style>
+            
         </div>
+
+        
 
         <div class="login-text text-dark d-flex justify-content-center">
             <p id="slogan" class="pb-4">Entre no <em><strong><span class="text-primary-emphasis">Conecta Científica</span></strong></em>!</p>
