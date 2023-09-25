@@ -138,3 +138,67 @@ class YourAppTestCase(TestCase):
         }
         form = LoginForm(data=login_data)
         self.assertFalse(form.is_valid())  # Verifique se o formulário de login não é válido
+
+
+    def test_user_detail_view(self):
+      # Faça login
+      self.client.login(username='testuser', password='Test12345')
+
+      # Testar a visualização de detalhes do usuário existente
+      response = self.client.get(reverse('user_detail', kwargs={'pk': self.user.pk}))
+      #print(response.content)  # Imprima o conteúdo da resposta
+      self.assertEqual(response.status_code, 200)  # Verifique se a página é acessível
+      self.assertContains(response, self.user.username)  # Verifique se o nome de usuário está presente
+      self.assertContains(response, self.user.email)  # Verifique se o email está presente
+
+      # Testar a visualização de detalhes de um usuário que não existe
+      non_existent_user_id = self.user.pk + 1
+      response = self.client.get(reverse('user_detail', kwargs={'pk': non_existent_user_id}))
+      #print(response.content)  # Imprima o conteúdo da resposta
+      self.assertEqual(response.status_code, 404)  # Verifique se o usuário não existe
+
+ 
+    def test_user_update_view(self):
+      # Faça login
+      self.client.login(username='testuser', password='Test12345')
+      # Testar a atualização de detalhes do usuário existente
+      update_data = {
+          'username': 'updateduser',
+          'email': 'updated@example.com',
+          'first_name': 'Updated',
+          'last_name': 'User',
+          'password': 'NewPassword123',
+          'password_confirmation': 'NewPassword123'
+        } 
+      response = self.client.post(reverse('user_update', kwargs={'pk': self.user.pk}), data=update_data)
+      self.assertEqual(response.status_code, 302)  # Verifique se a atualização foi bem-sucedida
+
+      updated_user = User.objects.get(pk=self.user.pk)
+      self.assertEqual(updated_user.username, 'updateduser')  # Verifique se o nome de usuário foi atualizado
+      self.assertEqual(updated_user.email, 'updated@example.com')  # Verifique se o email foi atualizado
+
+      # Testar a atualização de detalhes de um usuário que não existe
+      non_existent_user_id = self.user.pk + 1
+      response = self.client.post(reverse('user_update', kwargs={'pk': non_existent_user_id}), data=update_data)
+      self.assertEqual(response.status_code, 404)  # Verifique se o usuário não existe
+
+
+    def test_user_delete_view(self):
+      # Faça login
+      self.client.login(username='testuser', password='Test12345')
+
+    # Testar a exclusão de um usuário existente
+      response = self.client.post(reverse('user_delete', kwargs={'pk': self.user.pk}))
+      self.assertEqual(response.status_code, 302)  # Verifique se a exclusão foi bem-sucedida
+
+      with self.assertRaises(User.DoesNotExist):
+          User.objects.get(pk=self.user.pk)  # Verifique se o usuário não existe mais
+
+      # Testar a exclusão de um usuário que não existe
+      non_existent_user_id = self.user.pk + 1
+      response = self.client.post(reverse('user_delete', kwargs={'pk': non_existent_user_id}))
+      self.assertEqual(response.status_code, 404)  # Verifique se o usuário não existe
+
+
+
+
