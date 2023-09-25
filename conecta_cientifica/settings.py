@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'conecta_cientifica.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'conectadb',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'conecta_cientifica',
         'USER': 'admin',
-        'PASSWORD': 'RQipGwfdBLtuWux83lpaCgq7kx0194KG',
-        'HOST': 'dpg-ck53nuei9prc73eo80gg-a.ohio-postgres.render.com',
-        'PORT': '5432',
+        'PASSWORD': '12345678',
+        'HOST': 'mysqlserver.chycvm7sglwj.us-east-2.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
