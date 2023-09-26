@@ -1,7 +1,8 @@
 {% extends 'base/base.html' %}
+{% load socialaccount %}
 
 {% block 'title' %}
-    <title>Registro de Usuário</title>
+    <title>Conecta Científica - Registro</title>
 {% endblock %}
 
 {% block 'body' %}
@@ -13,6 +14,13 @@
             <!-- {{ profile_form.as_p }} -->
             <button class="btn btn-primary rounded-pill" type="submit">REGISTRAR</button>
         </form>
+
+        <button class="btn btn-outline-info mt-3">
+            <a href="{% provider_login_url 'google' %}?next=/">
+                <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" class="google-logo">
+                Registrar-se com o Google
+            </a>
+        </button>
     </div>
 {% endblock %}
 
