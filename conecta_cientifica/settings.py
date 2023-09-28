@@ -90,10 +90,6 @@ DATABASES = {
         'HOST': 'dpg-ck53nuei9prc73eo80gg-a.ohio-postgres.render.com',
         'PORT': '5432',
     },
-    'test': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
 }
 
 
