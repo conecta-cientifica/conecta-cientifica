@@ -200,3 +200,22 @@ body {
 .formacao-pesquisa li {
     font-weight: 600;
 }
+
+/* project-card.html */
+
+.card-link {
+    text-decoration: none;
+}
+
+/* projects-feed.html */
+
+.projects-feed {
+    height: 80vh;
+    width: 1230px;
+    overflow-y: auto;
+}
+
+.card {
+    width: 350px;
+    height: 300px;
+}
