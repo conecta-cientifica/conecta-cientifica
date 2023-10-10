@@ -43,15 +43,22 @@
                 <a class="nav-link" href="{% url 'main' %}">INÍCIO</a>
               </li>
               {% endif %}
+              {% if request.path != '/projects-feed/' %}
               <li class="nav-item px-3">
-                <a class="nav-link" href="#">PROJETOS</a>
+                <a class="nav-link" href="{% url 'projects-feed' %}">PROJETOS</a>
               </li>
-              {% if request.path != '/login/' and request.path != '/user-profile/' %}
+              {% endif %}
+              {% if request.path != '/' and request.path != '/login/' and request.path != '/register/' and request.path != '/user-profile/' %}
+              <li class="nav-item px-3">
+                <a class="nav-link" href="{% url 'user-profile' %}">PERFIL</a>
+              </li>
+              {% endif %}
+              {% if request.path != '/login/' and request.path != '/user-profile/' and request.path != '/project-page/' %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
               </li>
               {% endif %}
-              {% if request.path != '/register/' and request.path != '/user-profile/' and request.path != '/' %}
+              {% if request.path != '/register/' and request.path != '/user-profile/' and request.path != '/' and request.path != '/project-page/' %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'register' %}">REGISTRO</a>
               </li>
