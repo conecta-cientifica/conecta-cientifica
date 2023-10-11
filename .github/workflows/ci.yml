@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - v0/criacao-testes-iniciais  # ou o nome da sua branch padrão
+      - master  # ou o nome da sua branch padrão
 
 jobs:
   test:
