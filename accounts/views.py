@@ -35,8 +35,8 @@ def login_view(request):
         login_form = LoginForm()
     return render(request, 'login.html', {'login_form': login_form, 'CLIENT_ID': settings.CLIENT_ID})
 
-
-
+def user_profile_view(request):
+    return render(request, "user-profile.html")
 
 @login_required
 def user_detail(request, pk):

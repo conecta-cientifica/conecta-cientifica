@@ -1,7 +1,8 @@
 {% extends 'base/base.html' %}
+{% load socialaccount %}
 
 {% block 'title' %}
-    <title>Login</title>
+    <title>Conecta Científica - Login</title>
 {% endblock %}
 
 {% block 'body' %}
@@ -22,21 +23,12 @@
                 <hr class="line p-1">
             </div>        
 
-            <br>
-            <script src="https://accounts.google.com/gsi/client" async defer></script>
-            <div id="g_id_onload"
-                data-client_id="{{ CLIENT_ID }}"
-                data-login_uri="http://localhost:8000/login/"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin"
-                data-type="standard"
-                data-size="large"
-                data-theme="outline"
-                data-text="sign_in_with"
-                data-shape="rectangular"
-                data-logo_alignment="left">
-            </div>
+            <button class="btn btn-outline-info mt-4">
+                <a href="{% provider_login_url 'google' %}?next=/">
+                    <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" class="google-logo">
+                    Login com o Google
+                </a>
+            </button>                    
         </div>
 
         <div class="login-text text-dark d-flex justify-content-center">

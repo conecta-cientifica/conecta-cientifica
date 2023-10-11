@@ -20,6 +20,9 @@
     <!-- Custom Style CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
+    <!-- Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
     <!-- Google Fonts -->    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,12 +46,12 @@
               <li class="nav-item px-3">
                 <a class="nav-link" href="#">PROJETOS</a>
               </li>
-              {% if request.path != '/login/' %}
+              {% if request.path != '/login/' and request.path != '/user-profile/' %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
               </li>
               {% endif %}
-              {% if request.path != '/register/' and request.path != '/' %}
+              {% if request.path != '/register/' and request.path != '/user-profile/' and request.path != '/' %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'register' %}">REGISTRO</a>
               </li>
