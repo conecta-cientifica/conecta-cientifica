@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-SITE_ID = 1
+SITE_ID = 3
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
 MIDDLEWARE = [
