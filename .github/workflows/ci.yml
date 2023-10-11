@@ -16,7 +16,7 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9.5  # ou a versão de Python que você está usando
+          python-version: 3.9.0  # ou a versão de Python que você está usando
 
       - name: Instalar dependências
         run: |
