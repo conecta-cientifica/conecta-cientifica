@@ -32,9 +32,11 @@ def login_view(request):
         login_form = LoginForm()
     return render(request, 'login.html', {'login_form': login_form})
 
+def user_profile_view(request):
+    return render(request, "user-profile.html")
 
 @login_required(login_url='/login/')
-def user_profile_view(request):
+def user_profile_edit_view(request):
     # Obtém o perfil do usuário atual ou cria um novo se não existir
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
@@ -83,7 +85,7 @@ def user_profile_view(request):
         research_area_form = ResearchAreaForm(instance=research_area_instance)
         research_project_form = ResearchProjectForm(instance=research_project_instance)
 
-    return render(request, 'user-profile.html', {
+    return render(request, 'user-profile-edit.html', {
         'user_profile_form': user_profile_form,
         'education_form': education_form,
         'research_area_form': research_area_form,
