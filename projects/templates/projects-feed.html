@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
+    <title>Exibição de Projetos</title>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container projects-feed p-5 d-flex align-content-between justify-content-around flex-wrap">
+        {% for row in project_cards %}
+            {% for item in row %}
+                {% include 'project-card.html' with item=project_card %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

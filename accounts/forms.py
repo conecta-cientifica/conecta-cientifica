@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.validators import RegexValidator
+from .models import UserProfile, Education, ResearchArea, ResearchProject, Tag
 
 
 class LoginForm(AuthenticationForm):
@@ -97,3 +98,50 @@ class UserForm(forms.ModelForm):
         
         return cleaned
     
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('first_name', 'last_name', 'email', 'tags',)
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'email': 'E-mail',
+        }
+
+class EducationForm(forms.ModelForm):
+    class Meta:
+        model = Education
+        fields = ('university', 'course', 'start_date', 'end_date')
+        labels = {
+            'university': 'Universidade',
+            'course': 'Curso',
+            'start_date': 'Data de Início',
+            'end_date': 'Data Prevista de Conclusão',
+        }
+
+class ResearchAreaForm(forms.ModelForm):
+    class Meta:
+        model = ResearchArea
+        fields = ('name',)
+        labels = {
+            'name': 'Nome',
+        }
+
+class ResearchProjectForm(forms.ModelForm):
+    class Meta:
+        model = ResearchProject
+        fields = ('title', 'thesis', 'grade_area', 'area', 'sub_area', 'specialty')
+        labels = {
+            'title': 'Título',
+            'thesis': 'Tese',
+            'grade_area': 'Grande área',
+            'area': 'Área',
+            'sub_area': 'Sub-Área',
+            'specialty': 'Especialidade',
+        }
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ('name',)
