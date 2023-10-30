@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - '*'  # ou o nome da sua branch padrão
+      - '**'  # ou o nome da sua branch padrão
 
 jobs:
   test:
@@ -24,4 +24,7 @@ jobs:
 
       - name: Executar testes
         run: |
-          python manage.py test accounts.tests --settings=conecta_cientifica.settings_test
+          for commit in $(git rev-list ${{ github.event.before}}..${{ github.sha}}); do
+              git checkout $commit
+              echo "python manage.py test accounts.tests --settings=conecta_cientifica.settings_test"
+          done
