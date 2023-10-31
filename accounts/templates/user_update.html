@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block 'title' %}
+    <title>Atualizar Detalhes do Usuário</title>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container">
+        <h1>Atualizar Detalhes do Usuário</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Atualizar</button>
+        </form>
+    </div>
+{% endblock %}
