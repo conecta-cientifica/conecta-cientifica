@@ -1,13 +1,10 @@
 from .settings import *
 
 DATABASES = {
-
-'default': {
-
-'ENGINE': 'django.db.backends.sqlite3',
-
-'NAME': 'mytestdatabase',
-
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-}
+SOCIALACCOUNT_ENABLED = False
