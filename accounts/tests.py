@@ -37,7 +37,8 @@ class YourAppTestCase(TestCase):
         # Teste o registro de um usuário
         response = self.client.post(reverse('register'), data=user_data)
         self.assertEqual(response.status_code, 302)  # Verifique se a resposta é um redirecionamento
-
+        # self.assertRedirects(response, reverse('login'))  # Verifique se o redirecionamento está correto
+    
     # def test_register_view_invalid(self):
     #     # Senha sem letra maiuscula
     #     user_data = {
