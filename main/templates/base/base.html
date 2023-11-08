@@ -67,8 +67,17 @@
         </div>
       </nav>
     {% endblock %}
+
+    {%if messages %}
+    {%for message in messages %}
+    <div {%if message.tags%}class="alert alert-{{ message.tags }}" {% endif %}>
+        {{ message }}
+    </div>
+    {%endfor%}
+    {%endif%}
     {% block 'body'%}
     {% endblock %}
+
     {% block 'footer' %}
     <footer class="footer text-body-secondary">
       <div class="container p-2">

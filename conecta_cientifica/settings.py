@@ -177,3 +177,10 @@ if 'test' in sys.argv:
     LOGIN_REDIRECT_URL = ''
     SOCIALACCOUNT_LOGIN_ON_GET=False
     SOCIALACCOUNT_PROVIDERS = {}  # Limpar as configurações dos provedores de autenticação social durante os testes
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS={
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success'
+}
