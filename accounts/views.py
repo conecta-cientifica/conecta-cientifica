@@ -3,6 +3,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from .forms import UserForm, LoginForm, UserProfileForm, EducationForm, ResearchAreaForm, ResearchProjectForm, TagForm
 from django.contrib import auth
+from django.contrib import messages
 import pdb
 from main import views 
 from django.conf import settings
@@ -21,9 +22,13 @@ def register_view(request):
             user.set_password(user_form.cleaned_data['password'])
             user.save()
             auth.login(request, user)
+            messages.success(
+                request, f'Registro realizado com sucesso.')
             return redirect('login')
-    else:
-        user_form = UserForm()
+        else:
+            user_form = UserForm()
+            messages.error(request, f'Erro de registro.')
+    user_form = UserForm()
     return render(request, 'register.html', {'user_form': user_form})
 
 
@@ -33,9 +38,13 @@ def login_view(request):
         if login_form.is_valid():
             user = login_form.get_user()
             auth.login(request, user)
+            messages.success(
+                request, f'Login realizado com sucesso.')
             return redirect(views.main_view)
-    else:
-        login_form = LoginForm()
+        else:
+            login_form = LoginForm()
+            messages.error(request, f'Erro de login.')
+    login_form = LoginForm()    
     return render(request, 'login.html', {'login_form': login_form})
 
 def user_profile_view(request):
