@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
-from .forms import UserForm, LoginForm, UserProfileForm, EducationForm, ResearchAreaForm, ResearchProjectForm, TagForm
+from .forms import UserForm, LoginForm, UserProfileForm, EducationForm, ResearchAreaForm, ResearchProjectForm, TagForm, LattesForm
 from django.contrib import auth
 from django.contrib import messages
 import pdb
@@ -10,9 +10,10 @@ from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import User
-from .models import Education, UserProfile, ResearchArea, ResearchProject
+from .models import Education, UserProfile, ResearchArea, ResearchProject, Tag
 from django.contrib.auth.decorators import login_required
-
+from accounts.lattes.lattesadapter import LattesAdapter
+from accounts.lattes.lattes import Lattes
 
 def register_view(request):
     if request.method == 'POST':
@@ -58,53 +59,88 @@ def user_profile_edit_view(request):
     # Obtém as informações de educação, área de pesquisa e projetos de pesquisa do usuário
     education_instance = user_profile.educations.first()
     research_area_instance = user_profile.research_areas.first()
-    research_project_instance = user_profile.research_projects.first()
+    research_project_instance = user_profile.research_projects.first() 
 
     if request.method == 'POST':
-        # Verifica se todos os formulários são válidos e, em seguida, salva os dados no banco de dados
         user_profile_form = UserProfileForm(request.POST, instance=user_profile)
         education_form = EducationForm(request.POST, instance=education_instance)
         research_area_form = ResearchAreaForm(request.POST, instance=research_area_instance)
         research_project_form = ResearchProjectForm(request.POST, instance=research_project_instance)
+        if 'user_profile_form' in request.POST:
+            # Verifica se todos os formulários são válidos e, em seguida, salva os dados no banco de dados
 
-        if user_profile_form.is_valid() and education_form.is_valid() and research_area_form.is_valid() and research_project_form.is_valid():
-            user_profile_form.save()
-            
-            if education_instance is None:
-                education_instance = Education(user_profile=user_profile)
-            education_form = EducationForm(request.POST, instance=education_instance, initial={'user_profile': user_profile})
-            if education_form.is_valid():
-                education_form.save()
+            if user_profile_form.is_valid() and education_form.is_valid() and research_area_form.is_valid() and research_project_form.is_valid():
+                user_profile_form.save()
 
-            if research_area_instance is None:
-                research_area_instance = ResearchArea(user_profile=user_profile)
-            research_area_form = ResearchAreaForm(request.POST, instance=research_area_instance, initial={'user_profile': user_profile})
-            if research_area_form.is_valid():
-                research_area_form.save()
+                if education_instance is None:
+                    education_instance = Education(user_profile=user_profile)
+                education_form = EducationForm(request.POST, instance=education_instance, initial={'user_profile': user_profile})
+                if education_form.is_valid():
+                    education_form.save()
 
-            if research_project_instance is None:
-                research_project_instance = ResearchProject(user_profile=user_profile)
-            research_project_form = ResearchProjectForm(request.POST, instance=research_project_instance, initial={'user_profile': user_profile})
-            if research_project_form.is_valid():
-                research_project_form.save()
-            
+                if research_area_instance is None:
+                    research_area_instance = ResearchArea(user_profile=user_profile)
+                research_area_form = ResearchAreaForm(request.POST, instance=research_area_instance, initial={'user_profile': user_profile})
+                if research_area_form.is_valid():
+                    research_area_form.save()
+
+                if research_project_instance is None:
+                    research_project_instance = ResearchProject(user_profile=user_profile)
+                research_project_form = ResearchProjectForm(request.POST, instance=research_project_instance, initial={'user_profile': user_profile})
+                if research_project_form.is_valid():
+                    research_project_form.save()
+
+        elif 'lattes_form' in request.POST:  
+            try:
+                adapter = LattesAdapter(Lattes())
+                lattes_id = str(request.POST['lattes_id'])
+                lattes_profile = adapter.get_lattes_profile(lattes_id)
+                #save profile
+                for titulation in lattes_profile.titulations:
+                    education_instance = Education()
+                    education_instance.user_profile = user_profile
+                    education_instance.course = titulation.formation_degree
+                    education_instance.degree = titulation.formation_degree
+                    education_instance.university = titulation.university
+                    education_instance.start_date = None
+                    education_instance.end_date = None
+                    education_instance.save()
+                for project in lattes_profile.projects:
+                    project_instance = ResearchProject()
+                    project_instance.user_profile = user_profile
+                    project_instance.title = project.project_name
+                    project_instance.description = project.project_description
+                    project_instance.save()
+                for line in lattes_profile.lines:
+                    tag_instance, created = Tag.objects.get_or_create(name=line.line_description)
+                    if created:
+                        tag_instance.save()
+                    user_profile.tags = tag_instance
+                    user_profile.save()
+                del adapter
+            except:
+                pass
+                #pop message of error in case of cnat get lattes_profile
+                
     else:
         user = request.user
+        name = str(user.first_name) + ' ' + str(user.last_name)
         user_profile_form = UserProfileForm(instance=user_profile, initial={
-            'first_name': user.first_name,
-            'last_name': user.last_name,
+            'name': name,
             'email': user.email,
         })
 
         education_form = EducationForm(instance=education_instance)
         research_area_form = ResearchAreaForm(instance=research_area_instance)
         research_project_form = ResearchProjectForm(instance=research_project_instance)
+    lattes_form = LattesForm()
 
     return render(request, 'user-profile-edit.html', {
         'user_profile_form': user_profile_form,
         'education_form': education_form,
         'research_area_form': research_area_form,
         'research_project_form': research_project_form,
+        'lattes_form': lattes_form
     })
 
 def user_detail(request, pk):

@@ -1,5 +1,5 @@
 import mysql.connector
-from queryerror import QueryException
+from accounts.lattes.queryerror import QueryException
 
 class DataBaseConn():
     def __init__(self):
