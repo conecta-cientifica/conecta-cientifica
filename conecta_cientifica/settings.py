@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path, os
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
@@ -165,3 +166,14 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'
 # LOGOUT_REDIRECT_URL = '/'
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    LOGIN_REDIRECT_URL = ''
+    SOCIALACCOUNT_LOGIN_ON_GET=False
+    SOCIALACCOUNT_PROVIDERS = {}  # Limpar as configurações dos provedores de autenticação social durante os testes

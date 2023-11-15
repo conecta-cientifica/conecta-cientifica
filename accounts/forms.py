@@ -107,6 +107,12 @@ class UserProfileForm(forms.ModelForm):
             'name': 'Nome',
             'email': 'E-mail',
         }
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'tags': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 class EducationForm(forms.ModelForm):
     class Meta:
@@ -119,13 +125,22 @@ class EducationForm(forms.ModelForm):
             'start_date': 'Data de Início',
             'end_date': 'Data Prevista de Conclusão',
         }
+        widgets = {
+            'university': forms.TextInput(attrs={'class': 'form-control'}),
+            'course': forms.TextInput(attrs={'class': 'form-control'}),
+            'start_date': forms.TextInput(attrs={'class': 'form-control'}),
+            'end_date': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 class ResearchAreaForm(forms.ModelForm):
     class Meta:
         model = ResearchArea
         fields = ('name',)
         labels = {
-            'name': 'Nome',
+            'name': 'Área de pesquisa',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'})
         }
 
 class ResearchProjectForm(forms.ModelForm):
@@ -135,6 +150,14 @@ class ResearchProjectForm(forms.ModelForm):
         labels = {
             'title': 'Título',
             'description': 'Descrição do Projeto'
+        }
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'thesis': forms.TextInput(attrs={'class': 'form-control'}),
+            'grade_area': forms.TextInput(attrs={'class': 'form-control'}),
+            'area': forms.TextInput(attrs={'class': 'form-control'}),
+            'sub_area': forms.TextInput(attrs={'class': 'form-control'}),
+            'specialty': forms.TextInput(attrs={'class': 'form-control'})
         }
 
 class TagForm(forms.ModelForm):
