@@ -1,34 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# class LinhaPesquisa(models.Model):
-#     descricao = models.CharField(max_length=100, null=False, blank = False)
-
-# class Perfil(models.Model):
-#     userID = models.OneToOneField(User, on_delete = models.CASCADE)
-#     linhas = models.ManyToManyField(LinhaPesquisa)
-
-# class Formacao_titulacao(models.Model):
-#     titulo = models.CharField(max_length=100)
-#     curso = models.CharField(max_length=100, null=False, blank=False)
-#     universidade = models.CharField(max_length=100, null=False, blank=False)
-#     tese = models.CharField(max_length=200, blank=False, null=False)
-#     grande_area = models.CharField(max_length=100)
-#     area = models.CharField(max_length=100)
-#     sub_area = models.CharField(max_length=100)
-#     especialidade = models.CharField(max_length=100)
-#     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE) 
-
 # Início cadastro usuário
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30, default='')
-    last_name = models.CharField(max_length=30, default='')
+    name = models.CharField(max_length=100, default='')
     email = models.EmailField(default='')
     tags = models.ManyToManyField('Tag', blank=True)
 
 class Education(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='educations')
+    degree = models.CharField(max_length=100, default='Graduação')
     university = models.CharField(max_length=100)
     course = models.CharField(max_length=100)
     start_date = models.DateField(null=True, blank=True)
@@ -41,11 +23,7 @@ class ResearchArea(models.Model):
 class ResearchProject(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='research_projects')
     title = models.CharField(max_length=100, blank=True, null=True)
-    thesis = models.CharField(max_length=100, blank=True, null=True)
-    grade_area = models.CharField(max_length=100, blank=True, null=True)
-    area = models.CharField(max_length=100, blank=True, null=True)
-    sub_area = models.CharField(max_length=100, blank=True, null=True)
-    specialty = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(default='', blank=True, null=True)
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)

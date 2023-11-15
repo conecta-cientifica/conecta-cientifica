@@ -102,18 +102,18 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('first_name', 'last_name', 'email', 'tags',)
+        fields = ('name', 'email', 'tags',)
         labels = {
-            'first_name': 'Nome',
-            'last_name': 'Sobrenome',
+            'name': 'Nome',
             'email': 'E-mail',
         }
 
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education
-        fields = ('university', 'course', 'start_date', 'end_date')
+        fields = ('university', 'degree', 'course', 'start_date', 'end_date')
         labels = {
+            'degree': 'Nível',
             'university': 'Universidade',
             'course': 'Curso',
             'start_date': 'Data de Início',
@@ -131,17 +131,21 @@ class ResearchAreaForm(forms.ModelForm):
 class ResearchProjectForm(forms.ModelForm):
     class Meta:
         model = ResearchProject
-        fields = ('title', 'thesis', 'grade_area', 'area', 'sub_area', 'specialty')
+        fields = ('title', 'description')
         labels = {
             'title': 'Título',
-            'thesis': 'Tese',
-            'grade_area': 'Grande área',
-            'area': 'Área',
-            'sub_area': 'Sub-Área',
-            'specialty': 'Especialidade',
+            'description': 'Descrição do Projeto'
         }
 
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = ('name',)
+
+
+class LattesForm(forms.Form):
+    lattes_id = forms.CharField(
+        label = 'Insira aqui seu Lattes ID',
+        required = True,
+        max_length = 20,
+    )

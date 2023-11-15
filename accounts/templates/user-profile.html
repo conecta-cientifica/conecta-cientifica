@@ -19,8 +19,19 @@
         
         <h2>Projetos</h2>
         {{ research_project_form.as_p }}
+
+        <input type="submit" name="user_profile_form" value="Save">
         
-        <input type="submit" value="Save">
+    </form>
+    <h1>Lattes</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <p>Utilize suas informações do Lattes para preencher seu perfil</p>
+
+        {{lattes_form}}
+
+        <input type="submit" name="lattes_form" value="Pesquisar">
     </form>
 </body>
 </html>
