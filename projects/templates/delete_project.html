@@ -1,0 +1,12 @@
+{% load static %}
+
+{% block content %}
+  <h2>Excluir Projeto</h2>
+  <p>Você tem certeza de que deseja excluir o projeto "{{ project.title }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, Excluir</button>
+  </form>
+  <br>
+  <a href="{% url 'projects-feed' %}">Cancelar e voltar para o Feed de Projetos</a>
+{% endblock %}
