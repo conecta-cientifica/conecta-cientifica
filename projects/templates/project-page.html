@@ -14,10 +14,20 @@
         <p>{{ project.description }}</p>
 
         <h3>Requisitos</h3>
+        {{ project.requirements }}
+        
+        <br>
+        <br>
+        <br>
 
-        {{  project.requirements }}
-   
-        </button>
+        {% if is_creator %}
+            <!-- Opções para o criador do projeto -->
+            <a href="{% url 'edit-project' project.id %}">Editar Projeto</a>
+            <a href="{% url 'delete-project' project.id %}">Excluir Projeto</a>
+        {% else %}
+            <!-- Opção para usuários que não são criadores do projeto -->
+            <a href="#">Inscrever-se</a>
+        {% endif %}
     </div>
 </body>
 </html>

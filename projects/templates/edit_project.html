@@ -1,0 +1,12 @@
+{% load static %}
+
+{% block content %}
+  <h2>Editar Projeto</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar Alterações</button>
+  </form>
+  <br>
+  <a href="{% url 'projects-feed' %}">Voltar para o Feed de Projetos</a>
+{% endblock %}
