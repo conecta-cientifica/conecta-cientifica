@@ -24,10 +24,31 @@
             <!-- Opções para o criador do projeto -->
             <a href="{% url 'edit-project' project.id %}">Editar Projeto</a>
             <a href="{% url 'delete-project' project.id %}">Excluir Projeto</a>
-        {% else %}
-            <!-- Opção para usuários que não são criadores do projeto -->
-            <a href="#">Inscrever-se</a>
+        {% elif user.is_authenticated %}
+            <!-- Verifica se o usuário está inscrito no projeto -->
+            {% if user in project.subscribers.all %}
+                <p>Você está inscrito neste projeto.</p>
+                <!-- Botão para cancelar inscrição -->
+                <form method="post" action="{% url 'unsubscribe-project' project.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Cancelar Inscrição</button>
+                </form>
+            {% else %}
+                <!-- Verifica se o usuário é o criador do projeto -->
+                {% if project.creator == user %}
+                    <p>Você é o criador deste projeto.</p>
+                {% else %}
+                    <!-- Botão de inscrição para usuários que não são criadores do projeto e não estão inscritos -->
+                    <form method="post" action="{% url 'subscribe-project' project.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Inscrever-se</button>
+                    </form>
+                {% endif %}
+            {% endif %}
         {% endif %}
+
+        <!-- Botão para voltar para o Feed de Projetos -->
+        <a href="{% url 'projects-feed' %}">Voltar para o Feed de Projetos</a>
     </div>
 </body>
 </html>

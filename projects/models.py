@@ -8,6 +8,7 @@ class Project(models.Model):
     description = models.TextField()
     requirements = models.TextField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    subscribers = models.ManyToManyField(User, related_name='subscribed_projects', default=None, blank=True)
 
     def __str__(self):
         return self.title
