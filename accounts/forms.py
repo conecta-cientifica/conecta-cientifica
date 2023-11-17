@@ -102,18 +102,19 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('name', 'email', 'tags',)
+        fields = ('name', 'email', 'tags','isTeacher')
         labels = {
             'name': 'Nome',
             'email': 'E-mail',
+            'isTeacher': 'É professor?'
         }
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'tags': forms.TextInput(attrs={'class': 'form-control'})
+            'tags': forms.TextInput(attrs={'class': 'form-control'}),
+            'isTeacher': forms.CheckboxInput(attrs={'class': 'form-control'})
         }
-
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education
