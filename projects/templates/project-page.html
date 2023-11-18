@@ -28,7 +28,7 @@
             {% if subscription_request %}
                 <!-- Se existe uma solicitação para o projeto -->
                 <p>Status da solicitação: {% if subscription_request.approved %}Aprovado{% elif subscription_request.approved is None %}Em aberto{% else %}Não aprovado{% endif %}</p>
-                {% if subscription_request.approved == 'Em aberto' %}
+                {% if subscription_request.approved is None %}
                     <!-- Se a solicitação está em aberto -->
                     <form method="post" action="{% url 'unsubscribe-project' project.id %}">
                         {% csrf_token %}

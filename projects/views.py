@@ -140,9 +140,17 @@ def unsubscribe_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     # Verifica se o usuário está inscrito no projeto
-    if request.user in project.subscribers.all():
-        # Remove o usuário da lista de inscritos
-        project.subscribers.remove(request.user)
+    subscription_request_exists = SubscriptionRequest.objects.filter(
+            project=project,
+            user=request.user,
+        ).exists()
+
+    if subscription_request_exists:
+        # Remove a inscrição do usuário no projeto
+        SubscriptionRequest.objects.filter(
+            project=project,
+            user=request.user,
+        ).delete()
         messages.success(request, 'Inscrição cancelada com sucesso.')
     else:
         messages.warning(request, 'Você não está inscrito neste projeto.')
@@ -164,6 +172,8 @@ def projects_feed_view(request):
             description = filter_form.cleaned_data.get('description')
             subscribed_only = filter_form.cleaned_data.get('subscribed_only')
             created_by_user = filter_form.cleaned_data.get('created_by_user')
+            approved_only = filter_form.cleaned_data.get('approved_only')
+            rejected_only = filter_form.cleaned_data.get('rejected_only')
 
             # Aplica os filtros ao QuerySet
             if title:
@@ -173,14 +183,14 @@ def projects_feed_view(request):
             if description:
                 project_cards = project_cards.filter(description__icontains=description)
             if subscribed_only:
-                project_cards = project_cards.filter(subscribers=request.user)
+                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=None)
             if created_by_user:
                 project_cards = project_cards.filter(creator=request.user)
-                
-            if filter_form.cleaned_data.get('approved_only'):
-                project_cards = project_cards.filter(subscribers__subscriptionrequest__approved=True, subscribers=request.user)
-            if filter_form.cleaned_data.get('rejected_only'):
-                project_cards = project_cards.filter(subscribers__subscriptionrequest__approved=False, subscribers=request.user)
+            if approved_only:
+                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=True)
+            if rejected_only:
+                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=False)
+
     else:
         filter_form = ProjectFilterForm()
         

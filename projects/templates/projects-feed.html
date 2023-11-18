@@ -8,25 +8,19 @@
 {% block 'body' %}
     <div class="container projects-feed p-5 d-flex align-content-between justify-content-around flex-wrap">
         <form method="get" action="{% url 'projects-feed' %}">
-            {{ filter_form }}
-            
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="approved_only" id="approvedOnly">
-                <label class="form-check-label" for="approvedOnly">
-                    Projetos Aprovados
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="rejected_only" id="rejectedOnly">
-                <label class="form-check-label" for="rejectedOnly">
-                    Projetos Rejeitados
-                </label>
-            </div>
+            {% for field in filter_form %}
+                {% if field.name != 'reset_filters' %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
 
             <button type="submit", class="btn btn-secondary">Filtrar</button>
             <a href="{% url 'projects-feed' %}" class="btn btn-secondary">Limpar Filtros</a>
         </form>
-
+        <br>
         {% for project in project_cards %}
             {% include 'project-card.html' with project=project %}
         {% endfor %}
