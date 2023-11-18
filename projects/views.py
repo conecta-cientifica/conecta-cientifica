@@ -3,7 +3,7 @@ from .models import Project
 from .forms import ProjectForm, ProjectFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.http import Http404
 
 @login_required(login_url='/login/')
 def projects_feed_view(request):
@@ -14,12 +14,15 @@ def projects_feed_view(request):
 # Exibe o projeto escolhido pelo usuário no feed - na url fica o id do projeto
 @login_required(login_url='/login/')
 def project_page_view(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    
-    # Verifica se o usuário logado é o criador do projeto
-    is_creator = project.creator == request.user if project.creator else False
-    
-    return render(request, "project-page.html", {'project': project, 'is_creator': is_creator})
+    try:
+        project = get_object_or_404(Project, pk=project_id)
+        
+        # Verifica se o usuário logado é o criador do projeto
+        is_creator = project.creator == request.user if project.creator else False
+        
+        return render(request, "project-page.html", {'project': project, 'is_creator': is_creator})
+    except Http404: # Se o projeto não for encontrado, redireciona para o feed de projetos
+        return redirect('projects-feed')
 
 @login_required(login_url='/login/')
 def create_project(request):
