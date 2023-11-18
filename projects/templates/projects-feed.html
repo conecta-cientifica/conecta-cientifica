@@ -7,11 +7,14 @@
 
 {% block 'body' %}
     <div class="container projects-feed p-5 d-flex align-content-between justify-content-around flex-wrap">
+        <form method="get" action="{% url 'projects-feed' %}">
+            {{ filter_form }}
+            <button type="submit", class="btn btn-secondary">Filtrar</button>
+            <a href="{% url 'projects-feed' %}" class="btn btn-secondary">Limpar Filtros</a>
+        </form>
+
         {% for project in project_cards %}
-            <div class="project-card">
-                <h2><a href="{% url 'project-page' project.id %}">{{ project.title }}</h2>
-                <p>{{ project.description }}</p>
-            </div>
-            {% endfor %}
+            {% include 'project-card.html' with project=project %}
+        {% endfor %}
     </div>
 {% endblock %}

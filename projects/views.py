@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project
-from .forms import ProjectForm
+from .forms import ProjectForm, ProjectFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -121,3 +121,35 @@ def unsubscribe_project(request, project_id):
 
     # Após o cancelamento, redireciona para a página do projeto
     return redirect('project-page', project_id=project_id)
+
+
+@login_required(login_url='/login/')
+def projects_feed_view(request):
+    project_cards = Project.objects.all()
+
+    # Se o formulário de filtro for enviado
+    if request.method == 'GET':
+        filter_form = ProjectFilterForm(request.GET)
+        if filter_form.is_valid():
+            title = filter_form.cleaned_data.get('title')
+            advisor = filter_form.cleaned_data.get('advisor')
+            description = filter_form.cleaned_data.get('description')
+            subscribed_only = filter_form.cleaned_data.get('subscribed_only')
+            created_by_user = filter_form.cleaned_data.get('created_by_user')
+
+            # Aplica os filtros ao QuerySet
+            if title:
+                project_cards = project_cards.filter(title__icontains=title)
+            if advisor:
+                project_cards = project_cards.filter(advisor__icontains=advisor)
+            if description:
+                project_cards = project_cards.filter(description__icontains=description)
+            if subscribed_only:
+                project_cards = project_cards.filter(subscribers=request.user)
+            if created_by_user:
+                project_cards = project_cards.filter(creator=request.user)
+    else:
+        filter_form = ProjectFilterForm()
+        
+    return render(request, "projects-feed.html", {'project_cards': project_cards, 'filter_form': filter_form})
+

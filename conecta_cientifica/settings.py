@@ -91,14 +91,21 @@ WSGI_APPLICATION = 'conecta_cientifica.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'conecta_cientifica',
+#         'USER': 'admin',
+#         'PASSWORD': '12345678',
+#         'HOST': '18.116.128.60',
+#         'PORT': '3306',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'conecta_cientifica',
-        'USER': 'admin',
-        'PASSWORD': '12345678',
-        'HOST': '18.116.128.60',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
