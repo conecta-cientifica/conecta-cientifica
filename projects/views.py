@@ -3,7 +3,7 @@ from .models import Project, SubscriptionRequest, SubscriptionHistory
 from .forms import ProjectForm, ProjectFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import Http404
+from django.db.models import Q
 from itertools import groupby
 
 @login_required(login_url='/login/')
@@ -139,7 +139,7 @@ def subscription_requests(request):
 def unsubscribe_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
-    # Verifica se o usuário está inscrito no projeto
+    # Verifica se o usuário está inscrito no projeto - status está "Em aberto" (para projetos em que a solicitação de inscrição já foi aprovada ou não aprovada não é possível cancelar a mesma)
     subscription_request_exists = SubscriptionRequest.objects.filter(
             project=project,
             user=request.user,
@@ -175,22 +175,25 @@ def projects_feed_view(request):
             approved_only = filter_form.cleaned_data.get('approved_only')
             rejected_only = filter_form.cleaned_data.get('rejected_only')
 
-            # Aplica os filtros ao QuerySet
+            query = Q()
+        
             if title:
-                project_cards = project_cards.filter(title__icontains=title)
+                query |= Q(title__icontains=title)
             if advisor:
-                project_cards = project_cards.filter(advisor__icontains=advisor)
+                query |= Q(advisor__icontains=advisor)
             if description:
-                project_cards = project_cards.filter(description__icontains=description)
+                query |= Q(description__icontains=description)
             if subscribed_only:
-                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=None)
+                query |= Q(subscriptionrequest__user=request.user, subscriptionrequest__approved=None)
             if created_by_user:
-                project_cards = project_cards.filter(creator=request.user)
+                query |= Q(creator=request.user)
             if approved_only:
-                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=True)
+                query |= Q(subscriptionrequest__user=request.user, subscriptionrequest__approved=True)
             if rejected_only:
-                project_cards = project_cards.filter(subscriptionrequest__user=request.user, subscriptionrequest__approved=False)
+                query |= Q(subscriptionrequest__user=request.user, subscriptionrequest__approved=False)
 
+            # Aplica os filtros usando a lógica "OU"
+            project_cards = project_cards.filter(query)
     else:
         filter_form = ProjectFilterForm()
         
