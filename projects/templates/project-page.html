@@ -25,14 +25,16 @@
             <a href="{% url 'edit-project' project.id %}">Editar Projeto</a>
             <a href="{% url 'delete-project' project.id %}">Excluir Projeto</a>
         {% elif user.is_authenticated %}
-            <!-- Verifica se o usuário está inscrito no projeto -->
-            {% if user in project.subscribers.all %}
-                <p>Você está inscrito neste projeto.</p>
-                <!-- Botão para cancelar inscrição -->
-                <form method="post" action="{% url 'unsubscribe-project' project.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Cancelar Inscrição</button>
-                </form>
+            {% if subscription_request %}
+                <!-- Se existe uma solicitação para o projeto -->
+                <p>Status da solicitação: {% if subscription_request.approved %}Aprovado{% elif subscription_request.approved is None %}Em aberto{% else %}Não aprovado{% endif %}</p>
+                {% if subscription_request.approved == 'Em aberto' %}
+                    <!-- Se a solicitação está em aberto -->
+                    <form method="post" action="{% url 'unsubscribe-project' project.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Cancelar Inscrição</button>
+                    </form>
+                {% endif %}
             {% else %}
                 <!-- Verifica se o usuário é o criador do projeto -->
                 {% if project.creator == user %}

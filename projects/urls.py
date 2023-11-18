@@ -10,4 +10,7 @@ urlpatterns = [
     path('delete-project/<int:project_id>/', views.delete_project, name='delete-project'),
     path('subscribe-project/<int:project_id>/', views.subscribe_project, name='subscribe-project'),
     path('unsubscribe-project/<int:project_id>/', views.unsubscribe_project, name='unsubscribe-project'),
+    path('subscription-requests/', views.subscription_requests, name='subscription-requests'),
+    path('approve-request/<int:request_id>/', views.approve_request, name='approve-request'),
+    path('reject-request/<int:request_id>/', views.reject_request, name='reject-request'),
 ]

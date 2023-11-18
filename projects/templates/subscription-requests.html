@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
+    <title>Solicitações de Inscrição</title>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container subscription-requests p-5">
+        <h1>Solicitações de Inscrição</h1>
+
+        {% for project, requests in grouped_requests.items %}
+            <h2>{{ project.title }}</h2>
+            
+            {% for request in requests %}
+                <p>
+                    {{ request.user.username }} deseja se inscrever.
+                    Status:
+                    {% if request.approved %}
+                        Aprovado
+
+                    {% elif request.approved is None %}
+                        Em aberto
+                        <form method="post" action="{% url 'subscription-requests' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_id" value="{{ request.id }}">
+                            <input type="hidden" name="approval_status" value="approve">
+                            <button type="submit">Aprovar</button>
+                        </form>
+                        <form method="post" action="{% url 'subscription-requests' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_id" value="{{ request.id }}">
+                            <input type="hidden" name="approval_status" value="reject">
+                            <button type="submit">Rejeitar</button>
+                        </form>
+
+                    {% else %}
+                        Não aprovado
+                    {% endif %}
+                </p>
+                <!-- Detalhes do histórico -->
+                <ul>
+                    {% for history_entry in request.subscriptionhistory_set.all %}
+                        <li>{{ history_entry.timestamp }} - {% if history_entry.approved %}Aprovado{% else %}Rejeitado{% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endblock %}

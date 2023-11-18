@@ -1,29 +1,32 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Project
+from .models import Project, SubscriptionRequest, SubscriptionHistory
 from .forms import ProjectForm, ProjectFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
+from itertools import groupby
 
 @login_required(login_url='/login/')
 def projects_feed_view(request):
     project_cards = Project.objects.all()  # Obtem todos os projetos do banco de dados
     return render(request, "projects-feed.html", {'project_cards': project_cards})
 
-
 # Exibe o projeto escolhido pelo usuário no feed - na url fica o id do projeto
-@login_required(login_url='/login/')
 def project_page_view(request, project_id):
-    try:
-        project = get_object_or_404(Project, pk=project_id)
-        
-        # Verifica se o usuário logado é o criador do projeto
-        is_creator = project.creator == request.user if project.creator else False
-        
-        return render(request, "project-page.html", {'project': project, 'is_creator': is_creator})
-    except Http404: # Se o projeto não for encontrado, redireciona para o feed de projetos
-        return redirect('projects-feed')
+    project = get_object_or_404(Project, id=project_id)
+    subscription_request = project.subscriptionrequest_set.filter(user=request.user).first()
 
+    # Dados referentes ao projeto que são enviados para o front
+    context = {
+        'project': project,
+        'subscription_request': subscription_request,
+        'is_creator': (project.creator == request.user) if request.user.is_authenticated else False,
+        'subscription_status': subscription_request.get_approved_display() if subscription_request and hasattr(subscription_request, 'get_approved_display') and subscription_request.approved is not None else None,
+    }
+    print(f'\n\n context: {context} \n\n') # debug
+    return render(request, 'project-page.html', context)
+
+# Criação de projeto
 @login_required(login_url='/login/')
 def create_project(request):
     if request.method == 'POST':
@@ -37,26 +40,7 @@ def create_project(request):
         form = ProjectForm()
     return render(request, 'create_project.html', {'form': form})
 
-@login_required(login_url='/login/')
-def edit_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    if request.method == 'POST':
-        form = ProjectForm(request.POST, instance=project)
-        if form.is_valid():
-            form.save()
-            return redirect('projects-feed')
-    else:
-        form = ProjectForm(instance=project)
-    return render(request, 'edit_project.html', {'form': form, 'project': project})
-
-@login_required(login_url='/login/')
-def delete_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    if request.method == 'POST':
-        project.delete()
-        return redirect('projects-feed')
-    return render(request, 'delete_project.html', {'project': project})
-
+# Edição de projeto
 @login_required(login_url='/login/')
 def edit_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -76,6 +60,7 @@ def edit_project(request, project_id):
         messages.error(request, 'Você não tem permissão para editar este projeto.')
         return redirect('project-page', project_id=project_id) # redireciona para a página do projeto
 
+# Exclusão de projeto
 @login_required(login_url='/login/')
 def delete_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -90,7 +75,8 @@ def delete_project(request, project_id):
     else:
         messages.error(request, 'Você não tem permissão para excluir este projeto.')
         return redirect('projects-feed')
-    
+
+# Inscrição em um projeto
 @login_required(login_url='/login/')
 def subscribe_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -100,16 +86,55 @@ def subscribe_project(request, project_id):
         messages.warning(request, 'Você não pode se inscrever no seu próprio projeto.')
     else:
         # Verifica se o usuário já está inscrito no projeto
-        if request.user in project.subscribers.all():
-            messages.warning(request, 'Você já está inscrito neste projeto.')
+        subscription_request_exists = SubscriptionRequest.objects.filter(
+            project=project,
+            user=request.user,
+        ).exists()
+
+        if subscription_request_exists:
+            messages.warning(request, 'Você já enviou uma solicitação para este projeto.')
         else:
-            # Adiciona o usuário à lista de inscritos
-            project.subscribers.add(request.user)
-            messages.success(request, 'Inscrição realizada com sucesso.')
+            # Cria a instância do SubscriptionRequest sem definir approved - será enviada uma solicitação de inscrição para o criador do projeto
+            subscription_request = SubscriptionRequest.objects.create(
+                project=project,
+                user=request.user,
+            )
+            messages.success(request, 'Solicitação de inscrição enviada com sucesso.')
 
     # Após a inscrição, redireciona para a página do projeto
     return redirect('project-page', project_id=project_id)
 
+# Visualizar inscrições em um projeto: apenas para criador do projeto
+@login_required(login_url='/login/')
+def subscription_requests(request):
+    subscription_requests = SubscriptionRequest.objects.filter(project__creator=request.user)
+    print(subscription_requests)
+
+    # Se o formulário de aprovação/não aprovação for enviado
+    if request.method == 'POST':
+        request_id = request.POST.get('request_id')
+        approval_status = request.POST.get('approval_status')  # 'approve' ou 'reject'
+
+        # Atualiza o status da solicitação
+        subscription_request = SubscriptionRequest.objects.get(id=request_id)
+        subscription_request.approved = (approval_status == 'approve')
+        subscription_request.save()
+
+        # Adiciona ao histórico
+        SubscriptionHistory.objects.create(
+            project=subscription_request.project,
+            user=subscription_request.user,
+            approved=subscription_request.approved,
+        )
+
+    # Agrupa as solicitações por projeto
+    grouped_requests = {}
+    for project, requests in groupby(subscription_requests, key=lambda req: req.project):
+        grouped_requests[project] = list(requests)
+
+    return render(request, 'subscription-requests.html', {'grouped_requests': grouped_requests})
+
+# Desinscrição em um projeto
 @login_required(login_url='/login/')
 def unsubscribe_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -125,7 +150,7 @@ def unsubscribe_project(request, project_id):
     # Após o cancelamento, redireciona para a página do projeto
     return redirect('project-page', project_id=project_id)
 
-
+# Filtros para o Feed
 @login_required(login_url='/login/')
 def projects_feed_view(request):
     project_cards = Project.objects.all()
@@ -151,8 +176,29 @@ def projects_feed_view(request):
                 project_cards = project_cards.filter(subscribers=request.user)
             if created_by_user:
                 project_cards = project_cards.filter(creator=request.user)
+                
+            if filter_form.cleaned_data.get('approved_only'):
+                project_cards = project_cards.filter(subscribers__subscriptionrequest__approved=True, subscribers=request.user)
+            if filter_form.cleaned_data.get('rejected_only'):
+                project_cards = project_cards.filter(subscribers__subscriptionrequest__approved=False, subscribers=request.user)
     else:
         filter_form = ProjectFilterForm()
         
     return render(request, "projects-feed.html", {'project_cards': project_cards, 'filter_form': filter_form})
 
+# Aprovar inscrição
+@login_required(login_url='/login/')
+def approve_request(request, request_id):
+    subscription_request = get_object_or_404(SubscriptionRequest, pk=request_id)
+    subscription_request.approved = True
+    subscription_request.save()
+    messages.success(request, 'Solicitação aprovada com sucesso.')
+    return redirect('subscription-requests')
+
+# Não aprovar inscrição
+@login_required(login_url='/login/')
+def reject_request(request, request_id):
+    subscription_request = get_object_or_404(SubscriptionRequest, pk=request_id)
+    subscription_request.delete()
+    messages.success(request, 'Solicitação rejeitada com sucesso.')
+    return redirect('subscription-requests')
