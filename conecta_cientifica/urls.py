@@ -20,7 +20,7 @@ from main import urls as main_app_urls
 from accounts import urls as accounts_app_urls
 from projects import urls as projects_app_urls
 from django.conf.urls.static import static
-from django.conf import settings
+from ..conecta_cientifica import settings
 
 
 urlpatterns = [
@@ -28,5 +28,4 @@ urlpatterns = [
     path('', include(accounts_app_urls)),
     path('', include(projects_app_urls)),
     path('', include(main_app_urls))
-]
-+ static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
