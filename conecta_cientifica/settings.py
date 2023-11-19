@@ -30,9 +30,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 CLIENT_ID = str(os.getenv('CLIENT_ID'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.env
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
