@@ -1,7 +1,7 @@
 from django.urls import path, include
 from accounts import views
 from django.conf.urls.static import static
-from ..conecta_cientifica import settings
+from conecta_cientifica import settings
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),

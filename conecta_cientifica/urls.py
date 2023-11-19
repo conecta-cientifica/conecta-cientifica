@@ -20,7 +20,7 @@ from main import urls as main_app_urls
 from accounts import urls as accounts_app_urls
 from projects import urls as projects_app_urls
 from django.conf.urls.static import static
-from ..conecta_cientifica import settings
+from conecta_cientifica import settings
 
 
 urlpatterns = [

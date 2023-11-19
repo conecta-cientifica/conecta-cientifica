@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.conf.urls.static import static
-from ..conecta_cientifica import settings
+from conecta_cientifica import settings
 
 urlpatterns = [
     path('projects-feed/', views.projects_feed_view, name='projects-feed'),
