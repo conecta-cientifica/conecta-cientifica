@@ -14,6 +14,7 @@ from pathlib import Path, os
 from dotenv import load_dotenv
 import sys
 import dj_database_url
+import os
 
 load_dotenv()
 
@@ -29,7 +30,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 CLIENT_ID = str(os.getenv('CLIENT_ID'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.env
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -187,7 +188,8 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse("postgres://conecta_cientifica_db_user:NCOexua0Ys81F4z6h9CaX4BKeR69Aw9V@dpg-clbqjcmg1b2c73eovte0-a.ohio-postgres.render.com/conecta_cientifica_db")
+database_url = os.environ.get("DATABASE_URL")
+DATABASES['default'] = dj_database_url.parse(database_url)
 
 if 'test' in sys.argv:
     DATABASES = {
