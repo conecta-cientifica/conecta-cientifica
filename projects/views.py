@@ -22,8 +22,8 @@ def project_page_view(request, project_id):
         'subscription_request': subscription_request,
         'is_creator': (project.creator == request.user) if request.user.is_authenticated else False,
         'subscription_status': subscription_request.get_approved_display() if subscription_request and hasattr(subscription_request, 'get_approved_display') and subscription_request.approved is not None else None,
+        'creator_username': project.creator.username,
     }
-    print(f'\n\n context: {context} \n\n') # debug
     return render(request, 'project-page.html', context)
 
 # Criação de projeto
