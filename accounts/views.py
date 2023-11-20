@@ -48,8 +48,9 @@ def login_view(request):
     login_form = LoginForm()    
     return render(request, 'login.html', {'login_form': login_form})
 
+@login_required(login_url='/login')
 def user_profile_view(request):
-    return render(request, "user-profile.html")
+    return render(request, 'user-profile.html')
 
 @login_required(login_url='/login/')
 def user_profile_edit_view(request):
