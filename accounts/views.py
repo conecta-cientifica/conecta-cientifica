@@ -158,9 +158,6 @@ def user_update(request, pk):
         form = UserForm(instance=user)
     return render(request, 'user_update.html', {'form': form})
 
-
-
-
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':

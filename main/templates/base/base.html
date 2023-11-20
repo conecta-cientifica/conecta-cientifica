@@ -48,17 +48,17 @@
                 <a class="nav-link" href="{% url 'projects-feed' %}">PROJETOS</a>
               </li>
               {% endif %}
-              {% if request.path != '/' and request.path != '/login/' and request.path != '/register/' and request.path != '/user-profile/' %}
+              {% if request.path != '/user-profile/' and user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'user-profile' %}">PERFIL</a>
               </li>
               {% endif %}
-              {% if request.path != '/login/' and request.path != '/user-profile/' and request.path != '/project-page/' %}
+              {% if request.path != '/login/' and not user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
               </li>
               {% endif %}
-              {% if request.path != '/register/' and request.path != '/user-profile/' and request.path != '/' and request.path != '/project-page/' %}
+              {% if request.path != '/register/' and not user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'register' %}">REGISTRO</a>
               </li>
