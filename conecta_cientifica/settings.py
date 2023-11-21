@@ -146,6 +146,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 print('ARTHUR ARTHUR ARTHUR')
 print(STATIC_ROOT)
+# Lista todos os arquivos e diretórios no caminho especificado
+conteudo = os.listdir(STATIC_ROOT)
+
+# Itera sobre o conteúdo e imprime cada item
+for item in conteudo:
+    print(item)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
