@@ -16,6 +16,10 @@ import sys
 import dj_database_url
 import os
 
+# Path helper
+location = lambda x: os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), x)
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,30 +132,50 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# STATICFILES_DIRS = ['/var/www/static/']
+# STATIC_URL = '/static/'
+# # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# # STATICFILES_DIRS = ['/var/www/static/']
+# # STATICFILES_DIRS = [
+# #     BASE_DIR / "static",
+# #     "/var/www/static/",
+# # ]
 # STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#     "/var/www/static/",
+#     # Development directory
+#     os.path.join(BASE_DIR, 'static'),
+
+#     # Production directory
+#     '/var/www/static/',
 # ]
-STATICFILES_DIRS = [
-    # Development directory
-    os.path.join(BASE_DIR, 'static'),
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-    # Production directory
-    '/var/www/static/',
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# print('ARTHUR ARTHUR ARTHUR')
+# print(STATIC_ROOT)
+# # Lista todos os arquivos e diretórios no caminho especificado
+# conteudo = os.listdir(STATIC_ROOT)
 
-print('ARTHUR ARTHUR ARTHUR')
-print(STATIC_ROOT)
-# Lista todos os arquivos e diretórios no caminho especificado
-conteudo = os.listdir(STATIC_ROOT)
+# # Itera sobre o conteúdo e imprime cada item
+# for item in conteudo:
+#     print(item)
 
-# Itera sobre o conteúdo e imprime cada item
-for item in conteudo:
-    print(item)
+# Absolute path to the directory that holds media.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = location("public/media")
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = '/media/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = location('public/static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (
+    location('static/'),
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
