@@ -7,20 +7,20 @@
 
 {% block 'body' %}
     <div class="container projects-feed p-5 d-flex align-content-between justify-content-around flex-wrap">
-        <form method="get" action="{% url 'projects-feed' %}">
+        <form method="get" action="{% url 'projects-feed' %}" class="d-flex justify-content-around align-self-center">
             {% for field in filter_form %}
                 {% if field.name != 'reset_filters' %}
-                    <div class="form-group">
+                    <div class="form-group m-2">
                         {{ field.label_tag }}
                         {{ field }}
                     </div>
                 {% endif %}
             {% endfor %}
 
-            <button type="submit", class="btn btn-secondary">Filtrar</button>
-            <a href="{% url 'projects-feed' %}" class="btn btn-secondary">Limpar Filtros</a>
+            <button type="submit", class="btn btn-primary m-2", style="width: 100px; height: 60px;">Filtrar</button>
+            <a href="{% url 'projects-feed' %}" class="btn btn-primary m-2", style="width: 100px; height: 60px;">Limpar Filtros</a>
         </form>
-        <br>
+     
         {% for project in project_cards %}
             {% include 'project-card.html' with project=project %}
         {% endfor %}
