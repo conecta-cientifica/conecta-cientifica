@@ -48,8 +48,9 @@ def login_view(request):
     login_form = LoginForm()    
     return render(request, 'login.html', {'login_form': login_form})
 
+@login_required(login_url='/login')
 def user_profile_view(request):
-    return render(request, "user-profile.html")
+    return render(request, 'user-profile.html')
 
 @login_required(login_url='/login/')
 def user_profile_edit_view(request):
@@ -157,9 +158,6 @@ def user_update(request, pk):
     else:
         form = UserForm(instance=user)
     return render(request, 'user_update.html', {'form': form})
-
-
-
 
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
