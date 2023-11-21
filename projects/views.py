@@ -37,8 +37,11 @@ def create_project(request):
             project.save()
             return redirect('projects-feed')
     else:
-        form = ProjectForm()
-    return render(request, 'create_project.html', {'form': form})
+        project_form = ProjectForm()
+
+    return render(request, 'create_project.html', {
+        'project_form': project_form
+    })
 
 # Edição de projeto
 @login_required(login_url='/login/')

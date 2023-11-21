@@ -115,6 +115,7 @@ class UserProfileForm(forms.ModelForm):
             'tags': forms.TextInput(attrs={'class': 'form-control'}),
             'isTeacher': forms.CheckboxInput(attrs={'class': 'form-control'})
         }
+        
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education

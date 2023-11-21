@@ -48,6 +48,11 @@
                 <a class="nav-link" href="{% url 'projects-feed' %}">PROJETOS</a>
               </li>
               {% endif %}
+              {% if request.path == '/projects-feed/' and user.is_authenticated %}
+              <li class="nav-item px-3">
+                <a class="nav-link" href="{% url 'create-project' %}">CRIAR PROJETO</a>
+              </li>
+              {% endif %}
               {% if request.path != '/user-profile/' and user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'user-profile' %}">PERFIL</a>
