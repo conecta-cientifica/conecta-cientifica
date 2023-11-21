@@ -12,5 +12,5 @@ urlpatterns = [
     path('delete-project/<int:project_id>/', views.delete_project, name='delete-project'),
     path('subscribe-project/<int:project_id>/', views.subscribe_project, name='subscribe-project'),
     path('unsubscribe-project/<int:project_id>/', views.unsubscribe_project, name='unsubscribe-project'),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)+ static(settings.STATIC_ROOT)
 
