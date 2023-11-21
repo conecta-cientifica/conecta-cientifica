@@ -1,39 +1,41 @@
+{% extends 'base/base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conecta Científica - Projeto</title>
-</head>
-<body>
-    <div class="container project_page p-5 my-3">
-        <h1>{{ project.title }}</h1>
-        <h4>Professor Orientador: {{ project.advisor }}</h4>
-        <p>Criado por: {{ creator_username }}</p>
-        <p>{{ project.description }}</p>
+{% block 'title' %}
+    <title>Projeto</title>
+{% endblock %}
 
-        <h3>Requisitos</h3>
-        {{ project.requirements }}
-        
-        <br>
-        <br>
-        <br>
+{% block 'body' %}
+    <div class="container project_page p-5 my-3 d-flex align-items-start flex-column">
+        <h1 class="text-primary-emphasis titulo mb-3">{{ project.title }}</h1>
+        <h2 class="text-success-emphasis mb-2">Professor Orientador: {{ project.advisor }}</h2>
+        <small class="text-body-tertiary">Criado por: {{ creator_username }}</small>
+
+        <p class="text-body my-5">{{ project.description }}</p>
+
+        <h3 class="text-success-emphasis">Requisitos</h3>
+        <div class="my-2">
+        {% for requirement in project.get_requirements %}
+            <span class="badge bg-primary">{{ requirement }}</span>
+        {% endfor %}
+        </div>
+    
 
         {% if is_creator %}
             <!-- Opções para o criador do projeto -->
-            <a href="{% url 'edit-project' project.id %}">Editar Projeto</a>
-            <a href="{% url 'delete-project' project.id %}">Excluir Projeto</a>
+            <div class="d-flex align-items-center mt-auto">
+                <a href="{% url 'edit-project' project.id %}" class="btn btn-primary btn-sm rounded-pill m-1">Editar Projeto</a>
+                <a href="{% url 'delete-project' project.id %}" class="btn btn-secondary btn-sm rounded-pill m-1">Excluir Projeto</a>
+            </div>
         {% elif user.is_authenticated %}
             {% if subscription_request %}
                 <!-- Se existe uma solicitação para o projeto -->
-                <p>Status da solicitação: {% if subscription_request.approved %}Aprovado{% elif subscription_request.approved is None %}Em aberto{% else %}Não aprovado{% endif %}</p>
+                <p class="text-body-secondary mt-5">Status da solicitação: {% if subscription_request.approved %}Aprovado{% elif subscription_request.approved is None %}Em aberto{% else %}Não aprovado{% endif %}</p>
                 {% if subscription_request.approved is None %}
                     <!-- Se a solicitação está em aberto -->
                     <form method="post" action="{% url 'unsubscribe-project' project.id %}">
                         {% csrf_token %}
-                        <button type="submit">Cancelar Inscrição</button>
+                        <button type="submit" class="btn btn-secondary rounded-pill mt-1 mb-5">Cancelar Inscrição</button>
                     </form>
                 {% endif %}
             {% else %}
@@ -44,14 +46,13 @@
                     <!-- Botão de inscrição para usuários que não são criadores do projeto e não estão inscritos -->
                     <form method="post" action="{% url 'subscribe-project' project.id %}">
                         {% csrf_token %}
-                        <button type="submit">Inscrever-se</button>
+                        <button type="submit" class="btn btn-primary rounded-pill my-5">Inscrever-se</button>
                     </form>
                 {% endif %}
             {% endif %}
         {% endif %}
 
         <!-- Botão para voltar para o Feed de Projetos -->
-        <a href="{% url 'projects-feed' %}">Voltar para o Feed de Projetos</a>
+        <a href="{% url 'projects-feed' %}" class="mt-auto">&#8592; Voltar para o Feed de Projetos</a>
     </div>
-</body>
-</html>
+{% endblock %}

@@ -1,12 +1,22 @@
+{% extends 'base/base.html' %}
 {% load static %}
 
-{% block content %}
-  <h2>Excluir Projeto</h2>
-  <p>Você tem certeza de que deseja excluir o projeto "{{ project.title }}"?</p>
+{% block 'title' %}
+    <title>Excluir Projeto</title>
+{% endblock %}
+
+{% block 'body' %}
+<div class="container d-flex flex-column align-content-between delete_project">
+  <h1 class="text-primary-emphasis titulo d-flex justify-content-center py-5">Excluir Projeto</h2>
+  
+  <div class="m-5">
+  <p class="text-body">Você tem certeza de que deseja excluir o projeto "{{ project.title }}"?</p>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">Sim, Excluir</button>
+    <button type="submit" class="btn btn-secondary btn-sm rounded-pill my-2">Sim, excluir</button>
   </form>
-  <br>
-  <a href="{% url 'projects-feed' %}">Cancelar e voltar para o Feed de Projetos</a>
+</div>
+
+  <a href="{% url 'project-page' project.id %}" class="mt-auto mb-5 mx-5">&#8592; Cancelar e voltar para a página do projeto</a>
+</div>
 {% endblock %}

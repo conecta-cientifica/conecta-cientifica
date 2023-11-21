@@ -13,13 +13,13 @@
             {% csrf_token %}
             {{ user_profile_form.as_p }}
     
-            <h2 class="text-primary-emphasis py-3">Educação</h2>
+            <h2 class="text-primary-emphasis py-3">Educação e Pesquisa</h2>
             {{ education_form.as_p }}
 
             {{ research_area_form.as_p }}
     
-            <h2 class="text-primary-emphasis py-3">Projetos</h2>
-            {{ research_project_form.as_p }}
+            {% comment %} <h2 class="text-primary-emphasis py-3">Projetos</h2>
+            {{ research_project_form.as_p }} {% endcomment %}
     
             <button class="btn btn-primary rounded-pill" type="submit">SALVAR</button>
         </form>

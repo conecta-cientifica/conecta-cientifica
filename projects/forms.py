@@ -2,6 +2,7 @@ from django import forms
 from .models import Project
 
 class ProjectForm(forms.ModelForm):
+    requirements = forms.CharField(label='Requisitos do Projeto (separados por vírgula)', widget=forms.TextInput(attrs={'class': 'form-control'}))
     class Meta:
         model = Project
         fields = ['title', 'advisor', 'description', 'requirements']
@@ -9,13 +10,11 @@ class ProjectForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'advisor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'requirements': forms.TextInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'title': 'Título do Projeto',
             'advisor': 'Professor Orientador',
             'description': 'Descrição do projeto',
-            'requirements': 'Requisitos do Projeto (separados por vírgula)'
         }
 
 class ProjectFilterForm(forms.Form):
