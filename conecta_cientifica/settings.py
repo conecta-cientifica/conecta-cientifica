@@ -144,6 +144,7 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+print('ARTHUR ARTHUR ARTHUR')
 print(STATIC_ROOT)
 
 # Default primary key field type
