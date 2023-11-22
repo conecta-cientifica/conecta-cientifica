@@ -102,18 +102,19 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('name', 'email', 'tags',)
+        fields = ('name', 'email', 'tags','isTeacher')
         labels = {
             'name': 'Nome',
             'email': 'E-mail',
+            'isTeacher': 'É professor?'
         }
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'tags': forms.TextInput(attrs={'class': 'form-control'})
+            'tags': forms.TextInput(attrs={'class': 'form-control'}),
+            'isTeacher': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
-
+        
 class EducationForm(forms.ModelForm):
     class Meta:
         model = Education
@@ -123,9 +124,10 @@ class EducationForm(forms.ModelForm):
             'university': 'Universidade',
             'course': 'Curso',
             'start_date': 'Data de Início',
-            'end_date': 'Data Prevista de Conclusão',
+            'end_date': 'Data de Conclusão (Real ou prevista)',
         }
         widgets = {
+            'degree': forms.TextInput(attrs={'class': 'form-control'}),
             'university': forms.TextInput(attrs={'class': 'form-control'}),
             'course': forms.TextInput(attrs={'class': 'form-control'}),
             'start_date': forms.TextInput(attrs={'class': 'form-control'}),
@@ -153,11 +155,7 @@ class ResearchProjectForm(forms.ModelForm):
         }
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'thesis': forms.TextInput(attrs={'class': 'form-control'}),
-            'grade_area': forms.TextInput(attrs={'class': 'form-control'}),
-            'area': forms.TextInput(attrs={'class': 'form-control'}),
-            'sub_area': forms.TextInput(attrs={'class': 'form-control'}),
-            'specialty': forms.TextInput(attrs={'class': 'form-control'})
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class TagForm(forms.ModelForm):

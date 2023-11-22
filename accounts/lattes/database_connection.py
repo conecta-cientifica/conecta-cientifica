@@ -1,12 +1,15 @@
-# import mysql.connector
-import psycopg2
-import os
+import mysql.connector
 from accounts.lattes.queryerror import QueryException
 
 class DataBaseConn():
     def __init__(self):
-        database_url = os.environ.get("DATABASE_URL")
-        self.conn = psycopg2.connect(database_url)
+        self.conn = mysql.connector.connect(
+               host='18.188.240.61',
+                database='myslqserver_secundario',
+                user='admin',
+                password='12345678',
+                port=3306
+            )
     def __del__(self):
         self.conn.close()
     

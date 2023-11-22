@@ -1,13 +1,13 @@
 {% load static %}
 
 <div class="project_card">
-    <div class="card border-primary mb-3">
-        <div class="card-header">Título do projeto de Iniciação Científica</div>
+    <div class="card border-primary m-2">
+        <div class="card-header">{{ project.title }}</div>
         <div class="card-body">
-        <p class="card-text">Uma breve descrição.</p>
+            <p class="card-text">{{ project.description }}</p>
         </div>
         <div class="card-footer">
-            <a href="{% url 'project-page' %}" class="card-link">MAIS DETALHES</a>
+            <a href="{% url 'project-page' project.id %}" class="card-link">MAIS DETALHES</a>
         </div>
     </div>
 </div>

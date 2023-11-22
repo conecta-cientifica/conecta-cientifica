@@ -1,38 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
     <title>Criar Projeto</title>
-</head>
-<body>
+{% endblock %}
+
+{% block 'body' %}
     <div class="container">
-        <h2>Criar Novo Projeto</h2>
+        <h1 class="text-primary-emphasis titulo d-flex justify-content-center py-5">Criar Novo Projeto</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="form-group">
-                {{ form.title.label_tag }} {{ form.title }}
-                <small class="form-text text-muted">Título do Projeto</small>
-                {{ form.title.errors }}
-            </div>
-            <div class="form-group">
-                {{ form.advisor.label_tag }} {{ form.advisor }}
-                <small class="form-text text-muted">Professor Orientador</small>
-                {{ form.advisor.errors }}
-            </div>
-            <div class="form-group">
-                {{ form.description.label_tag }} {{ form.description }}
-                <small class="form-text text-muted">Descrição do Projeto</small>
-                {{ form.description.errors }}
-            </div>
-            <div class="form-group">
-                {{ form.requirements.label_tag }} {{ form.requirements }}
-                <small class="form-text text-muted">Requisitos do Projeto (separados por vírgula)</small>
-                {{ form.requirements.errors }}
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </form>
+
+            {{ project_form.as_p }}
+
+            <button type="submit" class="btn btn-primary rounded-pill">Salvar</button>
+        </form> 
     </div>
-</body>
-</html>
+{% endblock %}

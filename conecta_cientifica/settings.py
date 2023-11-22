@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-SITE_ID = 4
+SITE_ID = 5
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
 MIDDLEWARE = [
@@ -98,6 +98,16 @@ WSGI_APPLICATION = 'conecta_cientifica.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'conecta_cientifica',
+        'USER': 'admin',
+        'PASSWORD': '12345678',
+        'HOST': '18.116.128.60',
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation
@@ -206,38 +216,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'
 # LOGOUT_REDIRECT_URL = '/'
-
-# postgres://conecta_cientifica_db_user:NCOexua0Ys81F4z6h9CaX4BKeR69Aw9V@dpg-clbqjcmg1b2c73eovte0-a.ohio-postgres.render.com/conecta_cientifica_db
-
-# Verifica se o arquivo de configuração local existe
-# if os.path.isfile(os.path.join(BASE_DIR, 'local_settings.py')):
-#     from local_settings import *
-# else:
-#     # Configurações para ambiente de produção
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': 'meu_app',
-#             'USER': 'admin',
-#             'PASSWORD': '12345678',
-#             'HOST': '18.120.122.60',
-#             'PORT': '3308',
-#         }
-#     }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'conecta_cientifica',
-        'USER': 'admin',
-        'PASSWORD': '12345678',
-        'HOST': '18.116.128.60',
-        'PORT': '3306',
-    }
-}
-
-database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse(database_url)
 
 if 'test' in sys.argv:
     DATABASES = {

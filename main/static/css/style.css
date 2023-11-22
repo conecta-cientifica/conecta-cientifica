@@ -21,7 +21,7 @@ body {
     margin-top: auto;
 }
 
-.btn {
+.btn-primary {
     background-color: #2b674f;
 }
 
@@ -229,6 +229,10 @@ body {
     height: 300px;
 }
 
+.card-body {
+    overflow-y: auto;
+}
+
 /* project-page.html */
 
 .project_page {
@@ -240,31 +244,22 @@ body {
     border-radius: 5px;
 }
 
-.project_infos {
-    flex: 2;
-    flex-direction: column;
-}
-
-.project_reqs {
-    flex: 1;
-}
-
-.spacing {
-    flex: 0.25;
-}
-
-.project_infos h1, .project_reqs h3 {
+.project_page h2 {
+    font-size: 20px;
     font-weight: 600;
 }
 
-.project_infos h1 {
-    flex: 2;
+.project_page h3 {
+    font-size: 18px;
+    font-weight: 600;
 }
 
-.project_infos h4 {
-    flex: 2;
-}
+/* delete_project.html */
 
-.project_infos p {
-    flex: 6;
+.delete_project {
+    height: 80vh;
+    width: 1100px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }

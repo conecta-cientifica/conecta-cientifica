@@ -7,7 +7,9 @@
         <div class="container main_p ps-6 p-5 text-dark">
             <p id="slogan"><em><strong><span class="text-primary-emphasis">Conectando mentes</span></strong></em> para fomentar a <em><strong><span class="text-primary-emphasis">ciência</span></strong></em>.</p>
             <p>Promovemos a colaboração, a descoberta e o aprendizado, inspirando o futuro da ciência.</p>
+            {% if not user.is_authenticated %}
             <a href="{% url 'register' %}" class="btn btn-primary rounded-pill">REGISTRE-SE AGORA</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

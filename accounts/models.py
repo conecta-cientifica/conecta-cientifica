@@ -7,7 +7,8 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=100, default='')
     email = models.EmailField(default='')
     tags = models.ManyToManyField('Tag', blank=True)
-
+    isTeacher = models.BooleanField(default=False)
+    
 class Education(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='educations')
     degree = models.CharField(max_length=100, default='Graduação')
