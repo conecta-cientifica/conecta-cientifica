@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('projects-feed/', views.projects_feed_view, name='projects-feed'),
@@ -13,4 +15,5 @@ urlpatterns = [
     path('subscription-requests/', views.subscription_requests, name='subscription-requests'),
     path('approve-request/<int:request_id>/', views.approve_request, name='approve-request'),
     path('reject-request/<int:request_id>/', views.reject_request, name='reject-request'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

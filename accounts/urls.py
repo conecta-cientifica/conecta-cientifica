@@ -1,5 +1,7 @@
 from django.urls import path, include
 from accounts import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -11,5 +13,5 @@ urlpatterns = [
     path('user-profile/', views.user_profile_view, name='user-profile'),
     path('user-profile-edit/', views.user_profile_edit_view, name='user-profile-edit'),
     path('accounts/', include('allauth.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
