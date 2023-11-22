@@ -177,6 +177,9 @@ def projects_feed_view(request):
             created_by_user = filter_form.cleaned_data.get('created_by_user')
             approved_only = filter_form.cleaned_data.get('approved_only')
             rejected_only = filter_form.cleaned_data.get('rejected_only')
+            area = filter_form.cleaned_data.get('area')
+            deadline = filter_form.cleaned_data.get('deadline')
+            faculty = filter_form.cleaned_data.get('faculty')
 
             query = Q()
         
@@ -194,7 +197,13 @@ def projects_feed_view(request):
                 query |= Q(subscriptionrequest__user=request.user, subscriptionrequest__approved=True)
             if rejected_only:
                 query |= Q(subscriptionrequest__user=request.user, subscriptionrequest__approved=False)
-
+            if area:
+                query |= Q(area=area)
+            if deadline:
+                query |= Q(deadline=deadline)
+            if faculty:
+                query |= Q(faculty=faculty)
+                
             # Aplica os filtros usando a lógica "OU"
             project_cards = project_cards.filter(query)
     else:
