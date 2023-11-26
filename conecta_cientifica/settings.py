@@ -32,6 +32,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 CLIENT_ID = str(os.getenv('CLIENT_ID'))
+DB_HOST = str(os.getenv('DB_HOST'))
+DB_USER = str(os.getenv('DB_USER'))
+DB_PASS = str(os.getenv('DB_PASS'))
+DB_PORT = str(os.getenv('DB_PORT'))
+DB_NAME = str(os.getenv('DB_NAME'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,7 +64,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
-SITE_ID = 5
+SITE_ID = 6
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
 MIDDLEWARE = [
@@ -101,11 +106,11 @@ WSGI_APPLICATION = 'conecta_cientifica.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'conecta_cientifica',
-        'USER': 'admin',
-        'PASSWORD': '12345678',
-        'HOST': '18.116.128.60',
-        'PORT': '3306',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASS,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
