@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Project, Faculty
 
 class ProjectForm(forms.ModelForm):
     requirements = forms.CharField(label='Requisitos do Projeto (separados por vírgula)', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -33,7 +33,8 @@ class ProjectFilterForm(forms.Form):
     rejected_only = forms.BooleanField(label='Inscrições não aprovadas', required=False, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
     area = forms.ChoiceField(label='Área', choices=Project.AREAS_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     deadline = forms.ChoiceField(label='Prazo', choices=Project.DEADLINE_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
-    faculty = forms.ChoiceField(label='Faculdade', choices=Project.FACULTY_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    faculty_choices = [(faculty.id, faculty.name) for faculty in Faculty.objects.all()]
+    faculty = forms.ChoiceField(label='Faculdade', choices=faculty_choices, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     
     # Adicionando um campo de reset para limpar os filtros
     reset_filters = forms.BooleanField(required=False, widget=forms.HiddenInput, initial=True)
