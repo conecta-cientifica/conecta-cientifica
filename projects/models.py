@@ -35,9 +35,11 @@ class Project(models.Model):
         ('Longo Prazo', 'Longo Prazo: mais de 12 meses'),
     ]
     
+    FACULTY_CHOICES = [(faculty.name, faculty.name) for faculty in Faculty.objects.all()]
+    
     area = models.CharField(max_length=50, choices=AREAS_CHOICES, default='', null=False, blank=False)
     deadline = models.CharField(max_length=30, choices=DEADLINE_CHOICES, default='', null=False, blank=False)
-    faculty = models.ManyToManyField(Faculty)
+    faculty = models.CharField(max_length=200, choices=FACULTY_CHOICES, default='', null=False, blank=False)
     
     def __str__(self):
         return self.title
