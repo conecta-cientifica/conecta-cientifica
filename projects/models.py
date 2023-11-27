@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+import spacy
+
+nlp = spacy.load('pt_core_news_sm')
 
 class Faculty(models.Model):
     name = models.CharField(max_length=200, default='', null=False, blank=False, unique=True)
@@ -49,6 +52,23 @@ class Project(models.Model):
     def get_requirements(self):
         # Retorna a lista de requisitos
         return self.requirements.split(',')
+    
+    # TAGS
+    tags = models.TextField(blank=True)
+
+    def save(self, *args, **kwargs):
+        # Processa a descrição para extrair as tags
+        if self.description:
+            doc = nlp(self.description)
+            self.tags = ','.join([token.text for token in doc if token.pos_ in ['NOUN', 'ADJ']]) # extrai substantivos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
+
+        # Processa os requisitos para extrair as tags
+        if self.requirements:    
+            requirements_doc = nlp(self.requirements)
+            req = [token.text for token in requirements_doc if token.pos_ in ['NOUN', 'VERB', 'ADJ']] # extrai substantivos, verbos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
+            self.requirements = ','.join(req) # Atualização da variável self.requirements
+        
+        super().save(*args, **kwargs)
 
 class SubscriptionRequest(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

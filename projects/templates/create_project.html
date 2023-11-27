@@ -11,9 +11,16 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            {{ project_form.as_p }}
+            {{ project_form.as_p|safe }}
 
             <button type="submit" class="btn btn-primary rounded-pill">Salvar</button>
         </form> 
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Aplica o Select2
+            $('form select').select2();
+        });
+    </script>
 {% endblock %}

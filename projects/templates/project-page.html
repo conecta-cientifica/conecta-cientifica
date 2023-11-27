@@ -27,9 +27,16 @@
         <h4 class="text-success-emphasis">Prazo</h4>
         <p class="text-body my-3">{{ project.get_deadline_display }}</p>
 
- 
         <h4 class="text-success-emphasis">Faculdade</h4>
         <p class="text-body my-3">{{ project.faculty }}</p>
+
+        <!-- Adicionando a seção de Tags -->
+        <h4 class="text-success-emphasis">Tags</h4>
+        <div class="my-3">
+            {% for tag in tags %}
+                <span class="badge bg-secondary">{{ tag }}</span>
+            {% endfor %}
+        </div>
     
         {% if is_creator %}
             <!-- Opções para o criador do projeto -->
