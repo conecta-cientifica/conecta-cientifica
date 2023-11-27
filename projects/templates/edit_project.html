@@ -10,10 +10,17 @@
   <h1 class="text-primary-emphasis titulo d-flex justify-content-center py-5">Editar Projeto</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_p|safe }} {# Use |safe to avoid escaping Select2 HTML #}
     <button type="submit" class="btn btn-primary rounded-pill my-2">Salvar Alterações</button>
   </form>
   <br>
   <a href="{% url 'project-page' project.id %}" class="mt-auto">&#8592; Voltar para a página do projeto</a>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Aplica o Select2
+        $('form select').select2();
+    });
+</script>
 {% endblock %}

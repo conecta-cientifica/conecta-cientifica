@@ -14,6 +14,7 @@ from .models import Education, UserProfile, ResearchArea, ResearchProject, Tag
 from django.contrib.auth.decorators import login_required
 from accounts.lattes.lattesadapter import LattesAdapter
 from accounts.lattes.lattes import Lattes
+from django.contrib.auth import logout
 
 def register_view(request):
     if request.method == 'POST':
@@ -47,6 +48,12 @@ def login_view(request):
             messages.error(request, f'Erro de login.')
     login_form = LoginForm()    
     return render(request, 'login.html', {'login_form': login_form})
+
+@login_required(login_url='/login/')
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Logout realizado com sucesso.')
+    return redirect(views.main_view)
 
 @login_required(login_url='/login')
 def user_profile_view(request):
