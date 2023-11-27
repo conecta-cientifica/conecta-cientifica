@@ -25,4 +25,11 @@
             {% include 'project-card.html' with project=project %}
         {% endfor %}
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Aplica o Select2
+            $('form select').select2();
+        });
+    </script>
 {% endblock %}

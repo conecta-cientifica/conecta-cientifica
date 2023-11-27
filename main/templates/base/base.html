@@ -27,6 +27,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+    <!-- Combobox personalizada - select2_forms -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 {% endblock %}
 
@@ -61,6 +66,11 @@
               {% if request.path != '/login/' and not user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
+              </li>
+              {% endif %}
+              {% if user.is_authenticated %}
+              <li class="nav-item px-3">
+                  <a class="nav-link" href="{% url 'logout' %}">LOGOUT</a>
               </li>
               {% endif %}
               {% if request.path != '/register/' and not user.is_authenticated %}

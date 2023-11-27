@@ -1,5 +1,6 @@
 from django import forms
 from .models import Project, Faculty
+from django_select2.forms import ModelSelect2Widget
 
 class ProjectForm(forms.ModelForm):
     requirements = forms.CharField(label='Requisitos do Projeto (separados por vírgula)', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -34,7 +35,13 @@ class ProjectFilterForm(forms.Form):
     area = forms.ChoiceField(label='Área', choices=Project.AREAS_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     deadline = forms.ChoiceField(label='Prazo', choices=Project.DEADLINE_CHOICES, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     faculty_choices = [(faculty.id, faculty.name) for faculty in Faculty.objects.all()]
-    faculty = forms.ChoiceField(label='Faculdade', choices=faculty_choices, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    # faculty = forms.ChoiceField(label='Faculdade', choices=faculty_choices, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    faculty = ModelSelect2Widget(
+        model=Faculty,
+        search_fields=['name__icontains'],
+        attrs={'class': 'form-control'},
+    )
     
     # Adicionando um campo de reset para limpar os filtros
     reset_filters = forms.BooleanField(required=False, widget=forms.HiddenInput, initial=True)
