@@ -20,7 +20,7 @@ class Project(models.Model):
     requires_approval = models.BooleanField(default=False)
     
     AREAS_CHOICES = [
-        ('', ''),  # Opção nula
+        ('', 'Nenhuma'),  # Opção nula
         ('Ciências Ambientais', 'Ciências Ambientais (Ecologia, Geologia, etc)'),
         ('Ciências da Saúde', 'Ciências da Saúde (Medicina, Biomedicina, etc)'),
         ('Ciências Exatas', 'Ciências Exatas (Matemática, Estatística, etc)'),
@@ -32,7 +32,7 @@ class Project(models.Model):
     ]
 
     DEADLINE_CHOICES = [
-        ('', ''),  # Opção nula
+        ('', 'Nenhum'),  # Opção nula
         ('Curto Prazo', 'Curto Prazo: até 6 meses'),
         ('Médio Prazo', 'Médio Prazo: 6 a 12 meses'),
         ('Longo Prazo', 'Longo Prazo: mais de 12 meses'),

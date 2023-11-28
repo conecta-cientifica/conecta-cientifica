@@ -25,6 +25,13 @@ body {
     background-color: #2b674f;
 }
 
+.alert {
+    position: fixed;
+    top: 6vh;
+    left: 0;
+    width: 100%;
+}
+
 /* main.html */
 
 .main {
@@ -219,7 +226,7 @@ body {
 /* projects-feed.html */
 
 .projects-feed {
-    height: 80vh;
+    height: 60vh;
     width: 1230px;
     overflow-y: auto;
 }
@@ -237,7 +244,7 @@ body {
 
 .project_page {
     position: relative;
-    height: 80vh;
+    min-height: 80vh;
     width: 1100px;
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -252,6 +259,7 @@ body {
 .project_page h3 {
     font-size: 18px;
     font-weight: 600;
+    margin-top: 10px;
 }
 
 /* delete_project.html */
