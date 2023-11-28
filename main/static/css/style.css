@@ -30,6 +30,7 @@ body {
     top: 6vh;
     left: 0;
     width: 100%;
+    z-index: 1000000000000; /* numero bem alto pra sobrepor todos elementos */
 }
 
 /* main.html */
@@ -270,4 +271,23 @@ body {
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+}
+
+/* subscription-requests.html */
+
+.subscription-requests {
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.subs-request {
+    width: 450px;
+    height: auto;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+}
+
+.subs-request h2 {
+    font-size: 20px;
+    font-weight: 600;
 }
