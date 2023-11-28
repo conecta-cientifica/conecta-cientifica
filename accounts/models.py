@@ -4,22 +4,26 @@ import spacy
 
 nlp = spacy.load('pt_core_news_sm')
 
-# Início cadastro usuário
+# Início cadastro usuário   
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, default='')
     email = models.EmailField(default='')
     description = models.TextField(default='', blank=True, null=True)
-    tags = models.ManyToManyField('Tag', blank=True)
     isTeacher = models.BooleanField(default=False)
     
+    # TAGS
+    tags = models.TextField(blank=True)
+        
     def save(self, *args, **kwargs):
         # Processa as tags baseadas na descrição do usuário
-        text_to_process = f'{self.description}'
+        text_to_process = f'{self.description} {self.educations.first().course} {self.educations.first().degree}' # Usa os dados da descrição, curso e grau
+        print(text_to_process)
         if text_to_process:
-            tags_from_user = ','.join([token.text for token in nlp(text_to_process) if token.pos_ in ['NOUN', 'ADJ']]) # extrai substantivos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
+            tags_from_user = ','.join([token.text for token in nlp(text_to_process) if token.pos_ in ['NOUN', 'ADJ']])
             self.tags = tags_from_user
         super().save(*args, **kwargs)
+
         
     
 class Education(models.Model):
@@ -39,11 +43,7 @@ class ResearchProject(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(default='', blank=True, null=True)
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    
-    def __str__(self):
-        return self.name
+
 # Fim cadastro usuário
 
 class Requisitos_Projeto(models.Model):

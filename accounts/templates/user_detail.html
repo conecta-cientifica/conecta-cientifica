@@ -10,6 +10,57 @@
         <h1>{{ user.username }}</h1>
         <p>Email: {{ user.email }}</p>
 
+       
+
+        <!-- Seção de Perfil -->
+        <h3 class="text-success-emphasis">Dados Pessoais</h3>
+       
+        <p>
+            Nome: {{ user_profile.name }}<br>
+            E-mail: {{ user_profile.email }}<br>
+            Descrição: {{ user_profile.description }}<br>
+        </p>
+        
+        <br>
+
+        <!-- Adicionando a seção de Tags -->
+        <h3 class="text-success-emphasis">Tags</h3>
+        <div class="my-3">
+            {% for tag in tags_list %}
+                <span class="badge bg-primary">{{ tag }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Seção de Educação 
+        <h3 class="text-success-emphasis">Educação</h3>
+        {% for education in educations %}
+            <p>
+                Grau: {{ education.degree }}<br>
+                Universidade: {{ education.university }}<br>
+                Curso: {{ education.course }}<br>
+                Data de Início: {{ education.start_date }}<br>
+                Data de Conclusão: {{ education.end_date }}
+            </p>
+        {% endfor %}
+
+
+        <h3 class="text-success-emphasis">Áreas de Pesquisa</h3>
+        {% for research_area in research_areas %}
+            <p>
+                Área de Pesquisa: {{ research_area.name }}
+            </p>
+        {% endfor %}
+
+        
+        <h3 class="text-success-emphasis">Projetos de Pesquisa</h3>
+        {% for research_project in research_projects %}
+            <p>
+                Título: {{ research_project.title }}<br>
+                Descrição: {{ research_project.description }}
+            </p>
+        {% endfor %}
+        -->
+
         {% if user.is_authenticated and user == request.user %}
             <a href="{% url 'user_update' pk=user.pk %}" class="btn btn-primary">Editar Perfil</a>
             <a href="{% url 'user_delete' pk=user.pk %}" class="btn btn-danger">Excluir Perfil</a>
