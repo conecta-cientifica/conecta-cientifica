@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from accounts.lattes.lattesadapter import LattesAdapter
 from accounts.lattes.lattes import Lattes
 from django.contrib.auth import logout
+from django.http import HttpResponseForbidden
 
 def register_view(request):
     if request.method == 'POST':
@@ -164,10 +165,23 @@ def user_update(request, pk):
             return redirect('user_detail', pk=user.pk)
     else:
         form = UserForm(instance=user)
+    
+    # Verificação para garantir que apenas o usuário autenticado pode atualizar sua própria conta
+    if user != request.user:
+        messages.error(request, 'Você não tem permissão para editar esta conta.')
+        return redirect('user_detail', pk=user.pk) # Redireciona para a página do projeto
+
     return render(request, 'user_update.html', {'form': form})
+
 
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
+    
+    # Verificação para garantir que apenas o usuário autenticado pode excluir sua própria conta
+    if user != request.user:
+        messages.error(request, 'Você não tem permissão para excluir esta conta.')
+        return redirect('user_detail', pk=user.pk) # Redireciona para a página do projeto
+    
     if request.method == 'POST':
         user.delete()
         return redirect('login')

@@ -57,17 +57,11 @@ class Project(models.Model):
     tags = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
-        # Processa a descrição para extrair as tags
-        if self.description:
-            doc = nlp(self.description)
-            self.tags = ','.join([token.text for token in doc if token.pos_ in ['NOUN', 'ADJ']]) # extrai substantivos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
-
-        # Processa os requisitos para extrair as tags
-        if self.requirements:    
-            requirements_doc = nlp(self.requirements)
-            req = [token.text for token in requirements_doc if token.pos_ in ['NOUN', 'VERB', 'ADJ']] # extrai substantivos, verbos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
-            self.requirements = ','.join(req) # Atualização da variável self.requirements
-        
+        # Processa a descrição e os requisitos para extrair as tags
+        text_to_process = f'{self.description} {self.requirements if hasattr(self, "requirements") else ""}'
+        if text_to_process:
+            doc = nlp(text_to_process)
+            self.tags = ','.join([token.text for token in doc if token.pos_ in ['NOUN', 'ADJ']]) # extrai substantivos e adjetivos como tags - tags são armazenadas como uma string separada por vírgulas
         super().save(*args, **kwargs)
 
 class SubscriptionRequest(models.Model):
