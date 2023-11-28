@@ -165,7 +165,7 @@ def user_detail(request, pk):
     user = get_object_or_404(User, pk=pk)
     
     # Obtém o perfil do usuário
-    user_profile = user.userprofile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
     
     tags_list = user_profile.tags.split(',')
     return render(request, 'user_detail.html', {
@@ -176,6 +176,12 @@ def user_detail(request, pk):
 
 @login_required(login_url='/login/')
 def user_update(request, pk):
+    # Verificação para garantir que apenas o usuário autenticado pode atualizar sua própria conta
+    user = get_object_or_404(User, pk=pk)
+    if user != request.user:
+        messages.error(request, 'Você não tem permissão para atualizar esta conta.')
+        return redirect('user_detail', pk=user.pk) # Redireciona para a página do projeto
+    
     # Obtém o perfil do usuário atual ou cria um novo se não existir
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
 
@@ -189,6 +195,7 @@ def user_update(request, pk):
     # print(f'research_areas: {research_area_instance}')
     # print(f'research_projects: {research_project_instance}')
 
+    
     if request.method == 'POST':
         user_profile_form = UserProfileForm(request.POST, instance=user_profile)
         # education_form = EducationForm(request.POST, instance=education_instance)

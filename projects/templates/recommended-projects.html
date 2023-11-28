@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
+    <title>Projetos Recomendados</title>
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container mt-3 accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Filtros
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                <div class="accordion-body">
+                    <form method="get" action="{% url 'recommended-projects' %}">
+                        {% for field in filter_form %}
+                            {% if field.name != 'reset_filters' %}
+                                <div class="form-group m-3">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary m-2" style="width: 100px; height: 60px;">Filtrar</button>
+                        <a href="{% url 'recommended-projects' %}" class="btn btn-primary m-2" style="width: 100px; height: 60px;">Limpar Filtros</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container projects-feed p-5 d-flex align-content-between justify-content-around flex-wrap">  
+        {% for project in recommended_projects %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description }}</p>
+                        <a href="{% url 'project-page' project.id %}" class="btn btn-primary">Mostrar mais</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Aplica o Select2
+            $('form select').select2();
+        });
+    </script>
+{% endblock %}
