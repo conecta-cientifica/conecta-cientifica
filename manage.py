@@ -19,4 +19,8 @@ def main():
 
 
 if __name__ == '__main__':
+    with open('requirements.txt', 'r') as arquivo:
+        # Lê todo o conteúdo do arquivo e o imprime
+        conteudo = arquivo.read()
+        print(conteudo)
     main()
