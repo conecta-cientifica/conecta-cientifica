@@ -1,3 +1,4 @@
+<!-- user_detail.html -->
 {% extends 'base/base.html' %}
 
 {% block 'title' %}
@@ -8,5 +9,10 @@
     <div class="container">
         <h1>{{ user.username }}</h1>
         <p>Email: {{ user.email }}</p>
+
+        {% if user.is_authenticated and user == request.user %}
+            <a href="{% url 'user_update' pk=user.pk %}" class="btn btn-primary">Editar Perfil</a>
+            <a href="{% url 'user_delete' pk=user.pk %}" class="btn btn-danger">Excluir Perfil</a>
+        {% endif %}
     </div>
 {% endblock %}
