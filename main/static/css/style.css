@@ -25,6 +25,14 @@ body {
     background-color: #2b674f;
 }
 
+.alert {
+    position: fixed;
+    top: 6vh;
+    left: 0;
+    width: 100%;
+    z-index: 1000000000000; /* numero bem alto pra sobrepor todos elementos */
+}
+
 /* main.html */
 
 .main {
@@ -219,7 +227,7 @@ body {
 /* projects-feed.html */
 
 .projects-feed {
-    height: 80vh;
+    height: 60vh;
     width: 1230px;
     overflow-y: auto;
 }
@@ -237,7 +245,7 @@ body {
 
 .project_page {
     position: relative;
-    height: 80vh;
+    min-height: 80vh;
     width: 1100px;
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -252,6 +260,7 @@ body {
 .project_page h3 {
     font-size: 18px;
     font-weight: 600;
+    margin-top: 10px;
 }
 
 /* delete_project.html */
@@ -262,4 +271,23 @@ body {
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+}
+
+/* subscription-requests.html */
+
+.subscription-requests {
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.subs-request {
+    width: 450px;
+    height: auto;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+}
+
+.subs-request h2 {
+    font-size: 20px;
+    font-weight: 600;
 }
