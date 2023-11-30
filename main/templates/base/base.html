@@ -58,9 +58,14 @@
                 <a class="nav-link" href="{% url 'create-project' %}">CRIAR PROJETO</a>
               </li>
               {% endif %}
+              {% if request.path == '/projects-feed/' and user.is_authenticated %}
+              <li class="nav-item px-3">
+                <a class="nav-link" href="{% url 'subscription-requests' %}">GERENCIAR INSCRIÇÕES</a>
+              </li>
+              {% endif %}
               {% if request.path != '/user-profile/' and user.is_authenticated %}
               <li class="nav-item px-3">
-                <a class="nav-link" href="{% url 'user-profile' %}">PERFIL</a>
+                <a class="nav-link" href="{% url 'user_detail' pk=user.pk %}">PERFIL</a>
               </li>
               {% endif %}
               {% if request.path != '/login/' and not user.is_authenticated %}
@@ -84,23 +89,25 @@
     {% endblock %}
 
     {%if messages %}
-    {%for message in messages %}
-    <div {%if message.tags%}class="alert alert-{{ message.tags }}" {% endif %}>
-        {{ message }}
-    </div>
-    {%endfor%}
+      {%for message in messages %}
+      <div {%if message.tags%}class="alert alert-dismissible alert-{{ message.tags }}" {% endif %}>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          {{ message }}
+      </div>
+      {%endfor%}
     {%endif%}
+
     {% block 'body'%}
     {% endblock %}
 
     {% block 'footer' %}
-    <footer class="footer text-body-secondary">
-      <div class="container p-2">
-        <p class="float-end mb-1">Powered by <a href="https://www.djangoproject.com/">Django</a></p>
-        <p class="mb-1">Conecta Científica - Conectando mentes para fomentar a ciência</p>
-        <p class="mb-0">© Copyright {% now 'Y' %} <a href="">Conecta Científica</a></p>
-      </div>
-    </footer>
-  {% endblock %}
+        <footer class="footer text-body-secondary">
+          <div class="container p-2">
+            <p class="float-end mb-1">Powered by <a href="https://www.djangoproject.com/">Django</a></p>
+            <p class="mb-1">Conecta Científica - Conectando mentes para fomentar a ciência</p>
+            <p class="mb-0">© Copyright {% now 'Y' %} <a href="">Conecta Científica</a></p>
+          </div>
+        </footer>
+    {% endblock %}
 </body>
 </html>

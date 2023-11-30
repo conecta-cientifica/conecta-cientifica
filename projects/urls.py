@@ -15,5 +15,6 @@ urlpatterns = [
     path('subscription-requests/', views.subscription_requests, name='subscription-requests'),
     path('approve-request/<int:request_id>/', views.approve_request, name='approve-request'),
     path('reject-request/<int:request_id>/', views.reject_request, name='reject-request'),
+    path('recommended-projects/', views.recommend_projects_view, name='recommended-projects'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

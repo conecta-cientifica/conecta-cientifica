@@ -6,45 +6,53 @@
 {% endblock %}
 
 {% block 'body' %}
-    <div class="container subscription-requests p-5">
-        <h1>Solicitações de Inscrição</h1>
-
+    <h1 class="text-primary-emphasis titulo d-flex justify-content-center pt-3">Solicitações de Inscrição</h1>
+    <div class="container subscription-requests p-3 d-flex align-content-between justify-content-around flex-wrap">
         {% for project, requests in grouped_requests.items %}
-            <h2>{{ project.title }}</h2>
-            
-            {% for request in requests %}
-                <p>
-                    {{ request.user.username }} deseja se inscrever.
-                    Status:
-                    {% if request.approved %}
-                        Aprovado
+            <div class="container subs-request p-3 m-3">
+                <h2 class="mb-3">{{ project.title }}</h2>
+                
+                <ul class="list-group">
+                {% for request in requests %}
+                <li class="list-group-item">
+                    <p>Inscrição de {{ request.user.username }}</p>
+                    <p>
+                        Status:
+                        {% if request.approved %}
+                            Aprovado
 
-                    {% elif request.approved is None %}
-                        Em aberto
-                        <form method="post" action="{% url 'subscription-requests' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="request_id" value="{{ request.id }}">
-                            <input type="hidden" name="approval_status" value="approve">
-                            <button type="submit">Aprovar</button>
-                        </form>
-                        <form method="post" action="{% url 'subscription-requests' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="request_id" value="{{ request.id }}">
-                            <input type="hidden" name="approval_status" value="reject">
-                            <button type="submit">Rejeitar</button>
-                        </form>
+                        {% elif request.approved is None %}
+                            Em aberto
 
-                    {% else %}
-                        Não aprovado
-                    {% endif %}
-                </p>
-                <!-- Detalhes do histórico -->
-                <ul>
-                    {% for history_entry in request.subscriptionhistory_set.all %}
-                        <li>{{ history_entry.timestamp }} - {% if history_entry.approved %}Aprovado{% else %}Rejeitado{% endif %}</li>
-                    {% endfor %}
+                            <div class="d-flex justify-content-around">
+                                <form method="post" action="{% url 'subscription-requests' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="request_id" value="{{ request.id }}">
+                                    <input type="hidden" name="approval_status" value="approve">
+                                    <button class="btn btn-primary" type="submit">Aprovar</button>
+                                </form>
+                                <form method="post" action="{% url 'subscription-requests' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="request_id" value="{{ request.id }}">
+                                    <input type="hidden" name="approval_status" value="reject">
+                                    <button class="btn btn-secondary" type="submit">Rejeitar</button>
+                                </form>
+                            </div>
+
+                        {% else %}
+                            Não aprovado
+                        {% endif %}
+                    </p>
+                    <!-- Detalhes do histórico -->
+                    <ul>
+                        {% for history_entry in request.subscriptionhistory_set.all %}
+                            <li>{{ history_entry.timestamp }} - {% if history_entry.approved %}Aprovado{% else %}Rejeitado{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
                 </ul>
-            {% endfor %}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

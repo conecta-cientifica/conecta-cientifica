@@ -9,8 +9,16 @@
         <h1>Atualizar Detalhes do Usuário</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Atualizar</button>
+            
+            <!-- Campos do formulário -->
+            {{ user_profile_form.as_p }}
+            {{ education_form.as_p }}
+            {{ research_area_form.as_p }}
+            {{ research_project_form.as_p }}
+            
+            <!-- Botões para identificar o formulário -->
+            <button type="submit" name="user_profile_form" value="Salvar Perfil">Atualizar Perfil</button>
+            <button type="submit" name="lattes_form" value="Salvar Lattes">Salvar Lattes</button>
         </form>
     </div>
 {% endblock %}

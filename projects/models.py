@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import spacy
 
+
 nlp = spacy.load('pt_core_news_sm')
 
 class Faculty(models.Model):
@@ -20,7 +21,7 @@ class Project(models.Model):
     requires_approval = models.BooleanField(default=False)
     
     AREAS_CHOICES = [
-        ('', ''),  # Opção nula
+        ('', 'Nenhuma'),  # Opção nula
         ('Ciências Ambientais', 'Ciências Ambientais (Ecologia, Geologia, etc)'),
         ('Ciências da Saúde', 'Ciências da Saúde (Medicina, Biomedicina, etc)'),
         ('Ciências Exatas', 'Ciências Exatas (Matemática, Estatística, etc)'),
@@ -32,7 +33,7 @@ class Project(models.Model):
     ]
 
     DEADLINE_CHOICES = [
-        ('', ''),  # Opção nula
+        ('', 'Nenhum'),  # Opção nula
         ('Curto Prazo', 'Curto Prazo: até 6 meses'),
         ('Médio Prazo', 'Médio Prazo: 6 a 12 meses'),
         ('Longo Prazo', 'Longo Prazo: mais de 12 meses'),
@@ -57,18 +58,39 @@ class Project(models.Model):
     tags = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
-        # Processa a descrição para extrair as tags
-        if self.description:
-            doc = nlp(self.description)
-            self.tags = ','.join([token.text for token in doc if token.pos_ in ['NOUN', 'ADJ']]) # extrai substantivos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
-
-        # Processa os requisitos para extrair as tags
-        if self.requirements:    
-            requirements_doc = nlp(self.requirements)
-            req = [token.text for token in requirements_doc if token.pos_ in ['NOUN', 'VERB', 'ADJ']] # extrai substantivos, verbos e adjetivos como tags -  tags são armazenadas como uma string separada por vírgulas
-            self.requirements = ','.join(req) # Atualização da variável self.requirements
+        # Processa a descrição e os requisitos para extrair as tags
+        text_to_process = f'{self.description} {self.requirements if hasattr(self, "requirements") else ""}'
         
-        super().save(*args, **kwargs)
+        irrelevant = ["estudante", "professor", "pesquisa", "desenvolvimento", "avanço", 
+                    "contribui", "estudo", "objetivo", "bacharelado", "mestrado", "doutorado", 
+                    "bacharel", "mestre", "doutor", 
+                    "estágio", "foco", 'análise', "universidade", "faculdade",
+                      
+                    "student", "professor", "research", "development", "advance",
+                    "contribute", "study", "objective", "bachelor's degree", "master's degree", "doctorate",
+                    "bachelor", "master", "doctor",
+                    "internship", "focus", 'analysis', "university", "college"]
+        
+        if text_to_process:
+            nlp = spacy.load('pt_core_news_sm')
+            tokens = nlp(text_to_process)
+            relevant_tags = [token.text for token in tokens if token.pos_ in ['NOUN'] and token.text.lower() not in irrelevant]
+
+            # Verifica se há pelo menos uma palavra "relevante"
+            if relevant_tags:
+                num_tags_to_save = 25  # o número desejado de tags
+                relevant_tags = relevant_tags + [''] * (num_tags_to_save - len(relevant_tags))
+                relevant_tags = relevant_tags[:num_tags_to_save]
+                tags_from_user = ','.join(relevant_tags)
+
+                # Continue apenas se houver tags relevantes
+                if tags_from_user:
+                    self.tags = tags_from_user
+                    super().save(*args, **kwargs)
+            else:
+                # Se não houver palavras relevantes, salva um conjunto vazio de tags
+                self.tags = ''
+                super().save(*args, **kwargs)
 
 class SubscriptionRequest(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
