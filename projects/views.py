@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model
 from .models import Project, SubscriptionRequest, SubscriptionHistory
+from accounts.models import UserProfile
 from .forms import ProjectForm, ProjectFilterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from itertools import groupby
+from django.contrib.auth.decorators import login_required
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 @login_required(login_url='/login/')
 def projects_feed_view(request):
@@ -228,3 +234,72 @@ def reject_request(request, request_id):
     subscription_request.delete()
     messages.success(request, 'Solicitação rejeitada com sucesso.')
     return redirect('subscription-requests')
+
+
+# SISTEMA DE RECOMENDAÇÕES
+def recommend_projects(user_id, num_recommendations=5):
+    # ID usuário
+    user = get_user_model().objects.get(pk=user_id)
+
+    try:
+        # Verifica se UserProfile está criado para o usuário
+        user_profile = UserProfile.objects.get(user=user)
+        
+        # Tags associadas ao usuário
+        user_tags = user_profile.tags
+
+        # Tags de todos os projetos no banco de dados
+        projects = Project.objects.exclude(tags="")  # Exclui projetos sem tags
+
+        # Filtra projetos que não tem tags em comum com o usuário e tem pelo menos uma tag
+        relevant_projects = [project for project in projects if any(tag in user_tags.split(',') for tag in project.tags.split(','))]
+   
+        # Técnica TF-IDF para criar uma matriz de features a partir das tags dos projetos
+        vectorizer = TfidfVectorizer(token_pattern=r'(?u)\b\w+\b', stop_words=None)
+        projects_matrix = vectorizer.fit_transform([" ".join(project.tags.split(',')) for project in relevant_projects])
+
+        # Técnica TF-IDF para criar uma matriz de features para as tags do usuário
+        user_matrix = vectorizer.transform([" ".join(user_tags.split(','))])
+
+        # Calcula a similaridade entre as tags do usuário e as tags dos projetos usando cosine similarity
+        similarity_scores = cosine_similarity(user_matrix, projects_matrix)
+
+        # Encontra o maior número de tags em comum
+        max_common_tags = int(similarity_scores.max())
+
+        # Define o valor mínimo de tags em comum necessário para um projeto ser recomendado
+        min_common_tags = max(1, max_common_tags - 2)  # Define um mínimo de 1 tag em comum - ao alterar o valor de 1 a filtragem muda
+
+        # Ordena os índices dos projetos com base na pontuação final, obtendo os mais similares
+        recommended_projects_indices = similarity_scores.argsort(axis=1)[:, ::-1][:, :num_recommendations]
+
+        # Filtra os projetos usando os índices recomendados e o número mínimo de tags em comum
+        recommended_projects = [
+            relevant_projects[i] for i in recommended_projects_indices[0]
+            if len(set(user_tags.split(',')) & set(relevant_projects[i].tags.split(','))) >= min_common_tags
+        ]
+    except:
+        recommended_projects = []
+    return recommended_projects
+
+
+@login_required(login_url='/login/')
+def recommend_projects_view(request):
+    context = {}
+    
+    # Verifica se o usuário está autenticado
+    if request.user.is_authenticated:
+        user_id = request.user.id  # ID do usuário
+        
+        # Chama a função de recomendação passando o ID do usuário
+        recommended_projects = recommend_projects(user_id)
+        if len(recommended_projects) == 0:
+            messages.warning(request, 'Não há recomendações. Adicione mais informações na sua descrição!')
+        
+        # Obtem apenas os projetos recomendados do banco de dados
+        recommended_project_ids = [project.id for project in recommended_projects]
+        recommended_project_cards = Project.objects.filter(id__in=recommended_project_ids)
+        
+        context = {'recommended_projects': recommended_project_cards}
+
+    return render(request, "recommended-projects.html", context)

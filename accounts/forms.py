@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.validators import RegexValidator
-from .models import UserProfile, Education, ResearchArea, ResearchProject, Tag
+from .models import UserProfile, Education, ResearchArea, ResearchProject
 
 
 class LoginForm(AuthenticationForm):
@@ -102,18 +102,20 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('name', 'email', 'tags','isTeacher')
+        fields = ('name', 'email', 'description', 'isTeacher')  
         labels = {
             'name': 'Nome',
             'email': 'E-mail',
-            'isTeacher': 'É professor?'
+            'description': 'Descrição',
+            'isTeacher': 'É professor?',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'tags': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}), 
             'isTeacher': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
+
         
 class EducationForm(forms.ModelForm):
     class Meta:
@@ -157,11 +159,6 @@ class ResearchProjectForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
-class TagForm(forms.ModelForm):
-    class Meta:
-        model = Tag
-        fields = ('name',)
 
 
 class LattesForm(forms.Form):
