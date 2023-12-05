@@ -63,6 +63,11 @@
                 <a class="nav-link" href="{% url 'subscription-requests' %}">GERENCIAR INSCRIÇÕES</a>
               </li>
               {% endif %}
+              {% if request.path == '/projects-feed/' and user.is_authenticated %}
+              <li class="nav-item px-3">
+                <a class="nav-link" href="{% url 'recommended-projects' %}">RECOMENDAÇÕES</a>
+              </li>
+              {% endif %}
               {% if request.path != '/user-profile/' and user.is_authenticated %}
               <li class="nav-item px-3">
                 <a class="nav-link" href="{% url 'user_detail' pk=user.pk %}">PERFIL</a>
