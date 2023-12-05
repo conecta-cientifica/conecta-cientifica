@@ -7,14 +7,14 @@
 {% block 'body' %}
     <div class="container user-detail d-flex flex-column justify-content-around p-3">
         <div>
-            <h1>{{ user.username }}</h1>
-            <p>Email: {{ user.email }}</p>
+            <h1 class="text-primary-emphasis titulo mb-3">{{ user.username }}</h1>
+            <p class="text-body my-3">Email: {{ user.email }}</p>
         </div>
 
         <!-- Seção de Perfil -->
         <div>
             <h3 class="text-success-emphasis">Dados Pessoais</h3>
-            <p>
+            <p class="text-body my-3">
                 Nome: {{ user_profile.name }}<br>
                 E-mail: {{ user_profile.email }}<br>
                 Descrição: {{ user_profile.description }}<br>

@@ -241,7 +241,7 @@ body {
     overflow-y: auto;
 }
 
-/* project-page.html */
+/* project-page.html user_detail.html */
 
 .project_page {
     flex: 1;
@@ -257,7 +257,7 @@ body {
     font-weight: 600;
 }
 
-.project_page h3 {
+.project_page h3, .user-detail h3 {
     font-size: 18px;
     font-weight: 600;
     margin-top: 10px;
