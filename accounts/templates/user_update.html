@@ -6,7 +6,7 @@
 
 {% block 'body' %}
     <div class="container">
-        <h1>Atualizar Detalhes do Usuário</h1>
+        <h1 class="text-primary-emphasis titulo d-flex justify-content-center py-5">Atualizar Detalhes do Usuário</h2>
         <form method="post">
             {% csrf_token %}
             
@@ -17,8 +17,9 @@
             {{ research_project_form.as_p }}
             
             <!-- Botões para identificar o formulário -->
-            <button type="submit" name="user_profile_form" value="Salvar Perfil">Atualizar Perfil</button>
-            <button type="submit" name="lattes_form" value="Salvar Lattes">Salvar Lattes</button>
+            <button type="submit" name="user_profile_form" value="Salvar Perfil" class="btn btn-primary rounded-pill my-4 mx-1">Atualizar Perfil</button>
+            <button type="submit" name="lattes_form" value="Salvar Lattes" class="btn btn-primary rounded-pill my-4 mx-1">Salvar Lattes</button>
         </form>
+        <a href="{% url 'user_detail' pk=user.pk %}">&#8592; Voltar para a página de perfil</a>
     </div>
 {% endblock %}

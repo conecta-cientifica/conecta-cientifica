@@ -1,4 +1,3 @@
-<!-- user_detail.html -->
 {% extends 'base/base.html' %}
 
 {% block 'title' %}
@@ -6,29 +5,30 @@
 {% endblock %}
 
 {% block 'body' %}
-    <div class="container">
-        <h1>{{ user.username }}</h1>
-        <p>Email: {{ user.email }}</p>
-
-       
+    <div class="container user-detail d-flex flex-column justify-content-around p-3">
+        <div>
+            <h1>{{ user.username }}</h1>
+            <p>Email: {{ user.email }}</p>
+        </div>
 
         <!-- Seção de Perfil -->
-        <h3 class="text-success-emphasis">Dados Pessoais</h3>
-       
-        <p>
-            Nome: {{ user_profile.name }}<br>
-            E-mail: {{ user_profile.email }}<br>
-            Descrição: {{ user_profile.description }}<br>
-        </p>
-        
-        <br>
+        <div>
+            <h3 class="text-success-emphasis">Dados Pessoais</h3>
+            <p>
+                Nome: {{ user_profile.name }}<br>
+                E-mail: {{ user_profile.email }}<br>
+                Descrição: {{ user_profile.description }}<br>
+            </p>
+        </div>
 
         <!-- Adicionando a seção de Tags -->
-        <h3 class="text-success-emphasis">Tags</h3>
-        <div class="my-3">
-            {% for tag in tags_list %}
-                <span class="badge bg-primary">{{ tag }}</span>
-            {% endfor %}
+        <div>
+            <h3 class="text-success-emphasis">Tags</h3>
+            <div class="my-3">
+                {% for tag in tags_list %}
+                    <span class="badge bg-primary">{{ tag }}</span>
+                {% endfor %}
+            </div>
         </div>
 
         <!-- Seção de Educação 
@@ -62,8 +62,10 @@
         -->
 
         {% if user.is_authenticated and user == request.user %}
-            <a href="{% url 'user_update' pk=user.pk %}" class="btn btn-primary">Editar Perfil</a>
-            <a href="{% url 'user_delete' pk=user.pk %}" class="btn btn-danger">Excluir Perfil</a>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'user_update' pk=user.pk %}" class="btn btn-primary mx-2">Editar Perfil</a>
+            <a href="{% url 'user_delete' pk=user.pk %}" class="btn btn-danger mx-2">Excluir Perfil</a>
+        </div>
         {% endif %}
     </div>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'title' %}
+    <title>Excluir Projeto</title>
+{% endblock %}
+
+{% block 'body' %}
+<div class="container d-flex flex-column align-content-between delete_user">
+    <h1 class="text-primary-emphasis titulo d-flex justify-content-center py-5">Excluir Conta</h2>
+  
+    <div class="m-5">
+        <p class="text-body">Você tem certeza de que deseja sua conta?</p>
+        <form method="post">
+            {% csrf_token %}
+        <button type="submit" class="btn btn-secondary btn-sm rounded-pill my-2">Sim, excluir</button>
+        </form>
+    </div>
+    <a href="{% url 'user_detail' pk=user.pk %}" class="mt-auto mb-5 mx-5">&#8592; Cancelar e voltar para a página do perfil</a>
+</div>
+{% endblock %}
