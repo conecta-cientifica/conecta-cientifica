@@ -12,11 +12,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-@login_required(login_url='/login/')
-def projects_feed_view(request):
-    project_cards = Project.objects.all()  # Obtem todos os projetos do banco de dados
-    return render(request, "projects-feed.html", {'project_cards': project_cards})
-
 # Exibe o projeto escolhido pelo usuário no feed - na url fica o id do projeto
 def project_page_view(request, project_id):
     project = get_object_or_404(Project, id=project_id)
@@ -247,6 +242,10 @@ def recommend_projects(user_id, num_recommendations=5):
         
         # Tags associadas ao usuário
         user_tags = user_profile.tags
+        
+        if not user_tags: # Se não houver tags associadas ao usuário - não há descrição ou ela não gerou tags - retorna vazia a lista de recomendações
+            recommended_projects = []
+            return recommended_projects, False
 
         # Tags de todos os projetos no banco de dados
         projects = Project.objects.exclude(tags="")  # Exclui projetos sem tags
@@ -280,26 +279,58 @@ def recommend_projects(user_id, num_recommendations=5):
         ]
     except:
         recommended_projects = []
-    return recommended_projects
+
+    return recommended_projects, True
 
 
 @login_required(login_url='/login/')
 def recommend_projects_view(request):
-    context = {}
-    
     # Verifica se o usuário está autenticado
     if request.user.is_authenticated:
         user_id = request.user.id  # ID do usuário
+
+        # Chama a função de recomendação passando o ID do usuário - recebe os projetos recomendados e a informaçõa se há tags associadas ao usuário ao não
+        recommended_projects, user_tags = recommend_projects(user_id)
         
-        # Chama a função de recomendação passando o ID do usuário
-        recommended_projects = recommend_projects(user_id)
-        if len(recommended_projects) == 0:
-            messages.warning(request, 'Não há recomendações. Adicione mais informações na sua descrição!')
-        
+        if len(recommended_projects) == 0: # Não há projetos recomendados
+            if user_tags: # Se houver tags associadas ao usuário: Significa que só não há projetos que atendem as tags
+                messages.warning(request, 'Não há recomendações no momento...')
+            else: # Caso contrário não há descrição ou ela é insuficiente para gerar tags 
+                messages.warning(request, 'Não há recomendações. Adicione mais informações na sua descrição!')
+
         # Obtem apenas os projetos recomendados do banco de dados
         recommended_project_ids = [project.id for project in recommended_projects]
         recommended_project_cards = Project.objects.filter(id__in=recommended_project_ids)
-        
-        context = {'recommended_projects': recommended_project_cards}
 
-    return render(request, "recommended-projects.html", context)
+        # Lógica de filtro
+        filter_form = ProjectFilterForm(request.GET) 
+        if filter_form.is_valid():
+            title = filter_form.cleaned_data.get('title')
+            advisor = filter_form.cleaned_data.get('advisor')
+            description = filter_form.cleaned_data.get('description')
+            area = filter_form.cleaned_data.get('area')
+            deadline = filter_form.cleaned_data.get('deadline')
+            faculty = filter_form.cleaned_data.get('faculty')
+
+            query = Q()
+
+            if title:
+                query |= Q(title__icontains=title)
+            if advisor:
+                query |= Q(advisor__icontains=advisor)
+            if description:
+                query |= Q(description__icontains=description)
+            if area:
+                query |= Q(area=area)
+            if deadline:
+                query |= Q(deadline=deadline)
+            if faculty:
+                query |= Q(faculty=faculty)
+
+            # Aplica os filtros usando a lógica "OU"
+            recommended_project_cards = recommended_project_cards.filter(query)
+
+    else:
+        filter_form = ProjectFilterForm()  # Em caso de método diferente de GET
+
+    return render(request, "recommended-projects.html", {'recommended_projects': recommended_project_cards, 'filter_form': filter_form})
