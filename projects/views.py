@@ -242,6 +242,10 @@ def recommend_projects(user_id, num_recommendations=5):
         
         # Tags associadas ao usuário
         user_tags = user_profile.tags
+        
+        if not user_tags: # Se não houver tags associadas ao usuário - não há descrição ou ela não gerou tags - retorna vazia a lista de recomendações
+            recommended_projects = []
+            return recommended_projects, False
 
         # Tags de todos os projetos no banco de dados
         projects = Project.objects.exclude(tags="")  # Exclui projetos sem tags
@@ -275,7 +279,8 @@ def recommend_projects(user_id, num_recommendations=5):
         ]
     except:
         recommended_projects = []
-    return recommended_projects
+
+    return recommended_projects, True
 
 
 @login_required(login_url='/login/')
@@ -284,16 +289,20 @@ def recommend_projects_view(request):
     if request.user.is_authenticated:
         user_id = request.user.id  # ID do usuário
 
-        # Chama a função de recomendação passando o ID do usuário
-        recommended_projects = recommend_projects(user_id)
-        if len(recommended_projects) == 0:
-            messages.warning(request, 'Não há recomendações. Adicione mais informações na sua descrição!')
+        # Chama a função de recomendação passando o ID do usuário - recebe os projetos recomendados e a informaçõa se há tags associadas ao usuário ao não
+        recommended_projects, user_tags = recommend_projects(user_id)
+        
+        if len(recommended_projects) == 0: # Não há projetos recomendados
+            if user_tags: # Se houver tags associadas ao usuário: Significa que só não há projetos que atendem as tags
+                messages.warning(request, 'Não há recomendações no momento...')
+            else: # Caso contrário não há descrição ou ela é insuficiente para gerar tags 
+                messages.warning(request, 'Não há recomendações. Adicione mais informações na sua descrição!')
 
         # Obtem apenas os projetos recomendados do banco de dados
         recommended_project_ids = [project.id for project in recommended_projects]
         recommended_project_cards = Project.objects.filter(id__in=recommended_project_ids)
 
-        # Lógica de filtro semelhante à projects_feed_view
+        # Lógica de filtro
         filter_form = ProjectFilterForm(request.GET) 
         if filter_form.is_valid():
             title = filter_form.cleaned_data.get('title')
