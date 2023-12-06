@@ -241,7 +241,7 @@ body {
     overflow-y: auto;
 }
 
-/* project-page.html */
+/* project-page.html user_detail.html */
 
 .project_page {
     flex: 1;
@@ -257,15 +257,15 @@ body {
     font-weight: 600;
 }
 
-.project_page h3 {
+.project_page h3, .user-detail h3 {
     font-size: 18px;
     font-weight: 600;
     margin-top: 10px;
 }
 
-/* delete_project.html */
+/* delete_project.html user_confirm_delete.html */
 
-.delete_project {
+.delete_project, .delete_user {
     height: 80vh;
     width: 1100px;
     background: #FFFFFF;
@@ -290,4 +290,14 @@ body {
 .subs-request h2 {
     font-size: 20px;
     font-weight: 600;
+}
+
+/* user_detail.html */
+
+.user-detail {
+    height: 85vh;
+    width: 1100px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
