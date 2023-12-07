@@ -15,7 +15,9 @@
                 <ul class="list-group">
                 {% for request in requests %}
                 <li class="list-group-item">
-                    <p>Inscrição de {{ request.user.username }}</p>
+                    <p>Inscrição de <a href="{% url 'user_detail' pk=request.user.id %}">{{ request.user.username }}</a></p>
+
+                    <small class="text-body-tertiary">Criado por: <a href="{% url 'user_detail' pk=project.creator.id %}">{{ creator_username }}</a></small>
                     <p>
                         Status:
                         {% if request.approved %}
